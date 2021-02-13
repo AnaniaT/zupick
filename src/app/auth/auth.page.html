@@ -1,0 +1,63 @@
+<ion-content fullscreen class="ion-padding">
+  <ion-slides pager="true">
+    <ion-slide>
+      <div class="slide">
+        <div class="face">
+          <img
+            src="https://ionicframework.com/docs/demos/api/slides/slide-1.png"
+          />
+        </div>
+        <div class="body">
+          <h2>Welcome to <span class="brand">ZuPick</span></h2>
+          <p>
+            <span class="brand">ZuPick</span> can handle all your delivery.
+            Anything you order is delivered to any place you pick right away.
+            <b>Let us take care of you.</b>
+          </p>
+        </div>
+      </div>
+    </ion-slide>
+
+    <ion-slide>
+      <div class="slide">
+        <div class="face">
+          <img
+            src="https://ionicframework.com/docs/demos/api/slides/slide-2.png"
+          />
+        </div>
+        <div class="body">
+          <h2>Join Us</h2>
+          <p>
+            Have every thing you need at your hand.
+            <b>Create an account and let things work out for you.</b>
+          </p>
+          <ion-button fill="clear" [routerLink]="'/auth/signup'">
+            Sign Up
+            <ion-icon slot="end" name="create-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+    </ion-slide>
+
+    <ion-slide>
+      <div class="slide">
+        <div class="face">
+          <img
+            src="https://ionicframework.com/docs/demos/api/slides/slide-4.png"
+          />
+        </div>
+        <div class="body">
+          <h2>Have an account</h2>
+          <p>
+            Renew your days, log in to your account.
+            <b>Continue with the pleasant care.</b>
+          </p>
+          <ion-button fill="clear" [routerLink]="'/auth/login'">
+            Log In
+            <ion-icon slot="end" name="log-in-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar color="primary" class="ion-text-center">
+    <ion-title>Finish Loging In</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <div class="screen">
+    <h2>Enter Confirmation Code</h2>
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      class="num-input"
+      [ngClass]="{focused: isFocused}"
+    >
+      <ion-input
+        formControlName="code"
+        placeholder="XXXXX"
+        (keypress)="onKeyPress($event)"
+        (ionFocus)="isFocused = true"
+        (ionBlur)="isFocused = false"
+      ></ion-input>
+
+      <ion-button
+        type="submit"
+        expand="full"
+        fill="solid"
+        color="primary"
+        [disabled]="!form.valid"
+        [ngClass]="{open: form.valid}"
+      >
+        <ion-icon name="checkmark-sharp" slot="icon-only"></ion-icon>
+      </ion-button>
+    </form>
+
+    <p>
+      Hey there, a <b>confirmation code</b> was sent to your phone number.
+      <b>Please use that confirmation code to log in to your account.</b>
+    </p>
+
+    <p>
+      <b>Did not recieve confirmation code?</b>
+      <ion-button
+        expand="full"
+        fill="solid"
+        [disabled]="timeLimit > 0"
+        (click)="onResendConfirmation()"
+        color="primary"
+      >
+        {{ resendBtnTxt }}
+      </ion-button>
+    </p>
+  </div>
+</ion-content>

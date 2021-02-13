@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar color="primary" class="ion-text-center">
+    <ion-title>Finish Setup</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <ion-grid>
+      <ion-row>
+        <ion-col size-sm="8" offset-sm="2" size-md="6" offset-md="3">
+          <div class="form-item">
+            <ion-item>
+              <ion-label color="primary" position="floating"> Name </ion-label>
+              <ion-input
+                formControlName="name"
+                (keypress)="onKeyPress($event)"
+              ></ion-input>
+            </ion-item>
+            <p
+              class="err"
+              *ngIf="form.get('name').touched && (form.get('name').hasError('minlength') || form.get('name').hasError('maxlength'))"
+            >
+              Name must be 4 up to 20 in character
+            </p>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="8" offset-sm="2" size-md="6" offset-md="3">
+          <div class="form-item">
+            <ion-item>
+              <ion-label color="primary" position="floating">
+                Password
+              </ion-label>
+              <ion-input formControlName="password" type="password"></ion-input>
+            </ion-item>
+            <p
+              class="err"
+              *ngIf="form.get('password').touched && form.get('password').hasError('minlength')"
+            >
+              Password must at least be 6 characters long
+            </p>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="8" offset-sm="2" size-md="6" offset-md="3">
+          <div class="form-item">
+            <ion-item>
+              <ion-label color="primary" position="floating">
+                Confrim Password
+              </ion-label>
+              <ion-input
+                formControlName="passwordConf"
+                type="password"
+              ></ion-input>
+            </ion-item>
+            <p
+              class="err"
+              *ngIf="form.get('password').touched && form.get('passwordConf').touched && form.get('passwordConf').hasError('misMatch')"
+            >
+              Passwords do not match
+            </p>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-text-center">
+        <ion-col size-sm="8" offset-sm="2" size-md="6" offset-md="3">
+          <ion-button
+            type="submit"
+            [disabled]="!form.valid"
+            fill="solid"
+            color="primary"
+          >
+            Submit
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-text-center">
+        <ion-col size-sm="8" offset-sm="2" size-md="6" offset-md="3">
+          <p class="note">
+            Please fill up the above form to successfully finish
+            <b>creating your account</b>. See you on the other side.
+          </p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
