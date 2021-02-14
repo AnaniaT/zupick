@@ -1,3 +1,50 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-menu side="start" menuId="m1" contentId="router">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title> ZuPick </ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-list>
+        <ion-menu-toggle menuId="m1">
+          <ion-item lines="none">
+            <ion-icon name="analytics-outline" slot="start"></ion-icon>
+            <!-- <ion-label>Manage Deliveries</ion-label> -->
+            <ion-label>Dashboard</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <ion-menu-toggle menuId="m1">
+          <ion-item lines="none">
+            <ion-icon name="person-outline" slot="start"></ion-icon>
+            <ion-label>Account</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <ion-menu-toggle menuId="m1">
+          <ion-item lines="none">
+            <ion-icon name="reader-outline" slot="start"></ion-icon>
+            <ion-label>About</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <ion-menu-toggle menuId="m1">
+          <ion-item lines="none">
+            <ion-icon name="exit-outline" slot="start"></ion-icon>
+            <ion-label>Log Out</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+
+    <ion-footer class="ion-padding">
+      <ion-text>
+        <span class="brand">ZuPick</span> &copy; All Rights Reserved
+      </ion-text>
+    </ion-footer>
+  </ion-menu>
+
+  <ion-router-outlet id="router"></ion-router-outlet>
 </ion-app>
