@@ -1,0 +1,116 @@
+.picker {
+  width: 30rem;
+  max-width: 80%;
+  height: 20rem;
+  max-height: 30vh;
+  border: 1px solid var(--ion-color-primary);
+  margin: auto;
+  cursor: pointer;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+ion-item {
+  --min-height: 84px;
+  border: 1px solid red;
+  // max-width: 80%;
+  // width: 30rem;
+}
+
+.inp-item {
+  min-height: 84px;
+  max-width: 560px;
+  border: 1px solid #77c38267;
+  display: flex;
+  align-items: center;
+  margin: 5px auto 0;
+  border-radius: 3px;
+  // background-color: rgb(160, 202, 104);
+
+  &.blocked {
+    // pointer-events: stroke;
+    cursor: not-allowed;
+    position: relative;
+
+    &::after {
+      content: "";
+      cursor: not-allowed;
+      background-color: rgba(70, 131, 180, 0.4);
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+
+  &.passed {
+    // pointer-events: stroke;
+    cursor: not-allowed;
+    position: relative;
+
+    &::after {
+      content: "";
+      cursor: not-allowed;
+      background-color: #77c38266;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+
+  padding: 0 16px;
+
+  .icon {
+    // background-color: rgb(82, 72, 72);
+    width: 32px;
+    height: 32px;
+    margin: 12px 32px 12px 0;
+    // height: 100%;
+  }
+
+  .desc {
+    width: calc(100% - 64px);
+    // min-height: 78px;
+    min-height: 58px;
+    margin: 10px 0;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+
+    .title {
+      // background-color: #ddd;
+      margin: 2px 0;
+      height: 18px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ion-text-color, #000000);
+    }
+
+    p {
+      // background-color: rgb(82, 72, 72);
+      margin: 0 0 2px;
+      font-size: 13px;
+      color: var(--ion-color-step-600, #60646b);
+
+      b {
+        font-weight: 500;
+        color: var(--ion-text-color, #000000);
+      }
+    }
+  }
+}
