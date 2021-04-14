@@ -7,6 +7,7 @@ import {
 } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { OrderInterface, Coordinates, Order } from '../../order.model';
+import { OrdersService } from '../../order.service';
 
 @Component({
   selector: 'app-new',
@@ -22,6 +23,12 @@ export class NewPage implements OnInit {
 
   private toast: HTMLIonToastElement;
 
+  /*
+  CUrrent Rule of value
+  0 => Pickup Place
+  1 => Drop Place
+  2 => Delivery Description
+  */
   formStep = 0;
 
   private orderObj: OrderInterface | any = {};
@@ -30,7 +37,8 @@ export class NewPage implements OnInit {
     private modalCtrl: ModalController,
     private toastCtrl: ToastController,
     private alertCtrl: AlertController,
-    private router: Router
+    private router: Router,
+    private ordersService: OrdersService
   ) {}
 
   ngOnInit() {
@@ -41,15 +49,17 @@ export class NewPage implements OnInit {
     // this.onShowMap();
   }
 
-  clickHandler(isDropPlace: number) {
-    if (isDropPlace === this.formStep) {
-      if (isDropPlace !== 2) {
+  // Handles the action buttons based on the step
+  clickHandler(step: number) {
+    if (step === this.formStep) {
+      if (this.formStep < 2) {
         return this.onShowMap();
       }
       this.deliveryDesc();
     }
   }
 
+  // Handles the detail/help button at the top
   onMoreInfo() {
     this.alertCtrl
       .create({
@@ -82,7 +92,7 @@ export class NewPage implements OnInit {
       .then((modalInfo) => {
         this.toast.dismiss();
         if (modalInfo.role !== 'picked') {
-          return;
+          return; // The map had to be cancelled
         }
 
         switch (this.formStep) {
@@ -193,7 +203,6 @@ export class NewPage implements OnInit {
               if (alertData.desc) {
                 this.orderObj.desc = alertData.desc;
                 this.finishOrder();
-                this.router.navigate(['/home', 'ongoing']);
                 return true;
               }
               console.log('Please enter the name');
@@ -248,6 +257,7 @@ export class NewPage implements OnInit {
                     text: 'Okay',
                     role: 'cancel',
                     handler: () => {
+                      // Makes the toast show up again after it disapears
                       this.presentToast();
                     },
                   },
@@ -265,8 +275,13 @@ export class NewPage implements OnInit {
   }
 
   private finishOrder() {
-    let o: OrderInterface = this.orderObj;
-    const order = new Order(o.pickupPlace, o.dropPlace, o.desc);
-    console.log(order);
+    const o: OrderInterface = this.orderObj;
+    const randId = new Date().toISOString();
+    const order = new Order(randId, o.pickupPlace, o.dropPlace, o.desc);
+    console.log('loading');
+    this.ordersService.addOrder(order).subscribe(() => {
+      this.router.navigate(['/home', 'ongoing']);
+      console.log('done');
+    });
   }
 }

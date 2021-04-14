@@ -38,7 +38,7 @@ ion-item {
   // background-color: rgb(160, 202, 104);
 
   &.blocked {
-    // pointer-events: stroke;
+    pointer-events: none;
     cursor: not-allowed;
     position: relative;
 
@@ -55,7 +55,7 @@ ion-item {
   }
 
   &.passed {
-    // pointer-events: stroke;
+    pointer-events: none;
     cursor: not-allowed;
     position: relative;
 

@@ -37,6 +37,7 @@ export interface OrderInterface {
 
 export class Order {
   constructor(
+    public id: number | string,
     public pickupPlace: {
       name: string;
       location: Coordinates;
@@ -45,6 +46,7 @@ export class Order {
       name: string;
       location: Coordinates;
     },
-    public desc: string
+    public desc: string,
+    public status: string = 'Unconfirmed'
   ) {}
 }

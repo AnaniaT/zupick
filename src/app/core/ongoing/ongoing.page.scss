@@ -1,0 +1,106 @@
+ion-content {
+  position: relative;
+  .card {
+    flex-shrink: 0;
+    width: 300px;
+    margin: 10px;
+    border-radius: 4px;
+    box-shadow: rgb(0 0 0 / 20%) 0px 3px 1px -2px,
+      rgb(0 0 0 / 14%) 0px 2px 2px 0px, rgb(0 0 0 / 12%) 0px 1px 5px 0px;
+
+    // display: inline-block;
+    height: 304px;
+    background-color: #fff;
+
+    display: flex;
+    flex-direction: column;
+
+    &.placeholder {
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+      margin: 0 auto;
+    }
+
+    .header {
+      display: block;
+      padding: 16px;
+      // background-color: #fff;
+      min-height: 80px;
+      color: var(--ion-color-step-550, #737373);
+      font-weight: 500;
+
+      .title {
+        font-size: 20px;
+        line-height: 1.2;
+        color: var(--ion-color-step-850, #262626);
+      }
+
+      hr {
+        margin: 0 0 7px;
+        height: 1px;
+        background-color: transparent;
+        pointer-events: none;
+      }
+      .subtitle {
+        font-size: 14px;
+      }
+    }
+
+    .content {
+      color: var(--ion-color-step-550, #737373);
+      display: block;
+      padding: 0 16px 13px;
+      // background-color: rgb(211, 189, 94);
+      min-height: 76px;
+      flex: 1;
+
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    ion-item {
+      margin: 10px 0 15px;
+      --padding-start: 12px;
+      padding-right: 12px;
+    }
+  }
+  .horizontal-cards {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+
+    min-height: 480px;
+    // min-height: 225px;
+    background-color: #eee;
+
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 10px 0;
+
+    .scroll-end {
+      flex-shrink: 0;
+      display: inline-block;
+      width: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    // ion-card {
+    //   flex-shrink: 0;
+    //   display: inline-block;
+    //   width: 300px;
+    // }
+
+    &::-webkit-scrollbar {
+    }
+    &::-webkit-scrollbar-button {
+    }
+    &::-webkit-scrollbar-thumb {
+    }
+  }
+}
