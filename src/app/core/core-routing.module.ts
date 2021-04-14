@@ -8,21 +8,7 @@ const routes: Routes = [
   {
     path: '',
     component: CorePage,
-    children: [
-      {
-        path: '',
-        redirectTo: '/home/ongoing',
-        pathMatch: 'full',
-      },
-      {
-        path: 'ongoing',
-        loadChildren: () => import('./ongoing/ongoing.module').then( m => m.OngoingPageModule)
-      },
-      {
-        path: 'past',
-        loadChildren: () => import('./past/past.module').then( m => m.PastPageModule)
-      }
-    ]
+    pathMatch: 'full',
   },
 ];
 

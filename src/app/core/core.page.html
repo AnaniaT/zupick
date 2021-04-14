@@ -1,12 +1,97 @@
-<ion-tabs>
-  <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="ongoing">
-      <ion-icon name="receipt-outline"></ion-icon>
-      <ion-label>Ongoing</ion-label>
-    </ion-tab-button>
-    <ion-tab-button tab="past">
-      <ion-icon name="calendar-outline"></ion-icon>
-      <ion-label>Past</ion-label>
-    </ion-tab-button>
-  </ion-tab-bar>
-</ion-tabs>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button menuId="m1"></ion-menu-button>
+    </ion-buttons>
+    <ion-title color="primary"> ZuPick </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="motto">
+    <ion-text> Choose the </ion-text> <br />
+    <ion-text class="b"> food you love </ion-text>
+  </div>
+  <div class="bar">
+    <ion-searchbar placeholder="Search for a food item"></ion-searchbar>
+  </div>
+  <div class="group">
+    <ion-text>Categories</ion-text>
+    <div class="list">
+      <div class="item selected">
+        <ion-icon name="map"></ion-icon>
+        <ion-text>Burgers</ion-text>
+      </div>
+      <div class="item">
+        <ion-icon name="map"></ion-icon>
+        <ion-text>Pizza</ion-text>
+      </div>
+      <div class="item">
+        <ion-icon name="map"></ion-icon>
+        <ion-text>Sandwichs</ion-text>
+      </div>
+      <div class="item">
+        <ion-icon name="map"></ion-icon>
+        <ion-text>Sandwichs</ion-text>
+      </div>
+      <div class="item">
+        <ion-icon name="map"></ion-icon>
+        <ion-text>Sandwichs</ion-text>
+      </div>
+
+      <div class="spice"></div>
+    </div>
+  </div>
+
+  <div class="sub-group">
+    <ion-text>Burgers</ion-text>
+    <div class="list">
+      <div class="item selected">
+        <div class="img-box">
+          <div class="i">
+            <ion-img src="/assets/B1.jpg"></ion-img>
+          </div>
+        </div>
+        <ion-text class="name">Beef Burger</ion-text>
+        <div class="price">
+          <div class="p">$12.99</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="img-box">
+          <div class="i">
+            <ion-img src="/assets/B2.jpg"></ion-img>
+          </div>
+        </div>
+        <ion-text class="name">Cheese Burger HmmBurger Burger</ion-text>
+        <div class="price">
+          <div class="p">$14.99</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="img-box">
+          <div class="i">
+            <ion-img src="/assets/B2.jpg"></ion-img>
+          </div>
+        </div>
+        <ion-text class="name"
+          >Beef BurgerBurger Burger please change me into ellipsis</ion-text
+        >
+        <div class="price">
+          <div class="p">$12</div>
+        </div>
+      </div>
+
+      <div class="spice"></div>
+    </div>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="primary">
+      <ion-icon name="bag"></ion-icon>
+      <ion-badge color="danger">99</ion-badge>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
