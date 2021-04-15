@@ -10,6 +10,10 @@ const routes: Routes = [
     component: CorePage,
     pathMatch: 'full',
   },
+  {
+    path: 'item',
+    loadChildren: () => import('./item/item.module').then( m => m.ItemPageModule)
+  },
 ];
 
 @NgModule({
