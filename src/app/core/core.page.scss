@@ -1,9 +1,4 @@
 ion-header {
-  ::after {
-    height: 0 !important;
-    background-image: none !important;
-  }
-
   ion-toolbar {
     --background: #f7f7f7;
 
@@ -21,7 +16,7 @@ ion-header {
 ion-content {
   --background: #f7f7f7;
   --padding-start: 30px;
-  --padding-top: 30px;
+  --padding-top: 15px;
 
   .motto {
     // background-color: #fff;
@@ -66,6 +61,7 @@ ion-content {
       // overflow-y: hidden;
 
       .item {
+        outline: none;
         background-color: #fff;
         min-width: 100px;
         height: 70px;
@@ -201,6 +197,7 @@ ion-content {
 
     ion-fab-button {
       position: relative;
+      outline: none;
 
       ion-badge {
         position: absolute;

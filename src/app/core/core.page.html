@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button menuId="m1"></ion-menu-button>
@@ -46,52 +46,25 @@
   <div class="sub-group">
     <ion-text>Burgers</ion-text>
     <div class="list">
-      <div class="item selected" routerLink="item">
+      <div class="item" *ngFor="let f of foods" [routerLink]='["item", f.id]'>
         <div class="img-box">
           <div class="i">
-            <ion-img src="/assets/B1.jpg"></ion-img>
+            <ion-img src="{{f.imgAddr}}"></ion-img>
           </div>
         </div>
-        <ion-text class="name">Beef Burger</ion-text>
+        <ion-text class="name">{{f.name}}</ion-text>
         <div class="price">
-          <div class="p">$12.99</div>
+          <div class="p">${{f.price}}</div>
         </div>
       </div>
-
-      <div class="item">
-        <div class="img-box">
-          <div class="i">
-            <ion-img src="/assets/B2.jpg"></ion-img>
-          </div>
-        </div>
-        <ion-text class="name">Cheese Burger HmmBurger Burger</ion-text>
-        <div class="price">
-          <div class="p">$14.99</div>
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="img-box">
-          <div class="i">
-            <ion-img src="/assets/B2.jpg"></ion-img>
-          </div>
-        </div>
-        <ion-text class="name"
-          >Beef BurgerBurger Burger please change me into ellipsis</ion-text
-        >
-        <div class="price">
-          <div class="p">$12</div>
-        </div>
-      </div>
-
       <div class="spice"></div>
     </div>
   </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="primary">
+    <ion-fab-button routerLink="cart" color="primary">
       <ion-icon name="bag"></ion-icon>
-      <ion-badge color="danger">99</ion-badge>
+      <ion-badge color="danger">{{ cartSize }}</ion-badge>
     </ion-fab-button>
   </ion-fab>
 </ion-content>

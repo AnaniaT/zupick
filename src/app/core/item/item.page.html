@@ -1,58 +1,52 @@
 <ion-content class="ion-fullscreen">
   <ion-back-button defaultHref="/home"> </ion-back-button>
   <div class="img-box">
-    <ion-img src="/assets/B1.jpg"></ion-img>
+    <ion-img src="{{ food.imgAddr }}"></ion-img>
   </div>
   <div class="meta">
     <div class="info">
-      <ion-text class="name">Beef Burger</ion-text>
-      <ion-text class="price">$11.99</ion-text>
+      <ion-text class="name">{{ food.name }}</ion-text>
+      <ion-text class="price">${{ food.price }}</ion-text>
     </div>
     <div class="ctrls">
-      <div class="b">-</div>
-      <div class="b">99</div>
-      <div class="b">+</div>
+      <div class="b ion-activatable" (click)="alterQuantity('-')">
+        <ion-ripple-effect></ion-ripple-effect>
+        -
+      </div>
+      <div class="b">{{ quantity }}</div>
+      <div class="b ion-activatable" (click)="alterQuantity('+')">
+        <ion-ripple-effect></ion-ripple-effect>
+        +
+      </div>
     </div>
   </div>
-  <div class="desc">
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nobis eos quas
-    earum impedit ea possimus officiis, est fugit rerum dolores. Handle the
-    overflow of text here.
-  </div>
+  <div class="desc">{{ food.desc }}</div>
   <div class="list">
-    <div class="item">
+    <div
+      class="item"
+      *ngFor="let c of availableCafes"
+      (click)="cafeSelect(c.id)"
+      [ngClass]="{selected: isCafeSelected(c.id)}"
+    >
       <div class="logo">
-        <ion-img src="/assets/B1.jpg"></ion-img>
+        <ion-img src="{{ c.logo }}"></ion-img>
       </div>
-      <div class="name">Tinbit Jucie</div>
-    </div>
-    <div class="item selected">
-      <div class="logo">
-        <ion-img src="/assets/B1.jpg"></ion-img>
-      </div>
-      <div class="name">Rome 1990 Piazza</div>
-    </div>
-    <div class="item">
-      <div class="logo">
-        <ion-img src="/assets/B1.jpg"></ion-img>
-      </div>
-      <div class="name">Tasso Italian Restaurant</div>
-    </div>
-    <div class="item">
-      <div class="logo">
-        <ion-img src="/assets/B1.jpg"></ion-img>
-      </div>
-      <div class="name">Rome 1990 Turufat</div>
-    </div>
-    <div class="item">
-      <div class="logo">
-        <ion-img src="/assets/B1.jpg"></ion-img>
-      </div>
-      <div class="name">Tasso Italian Restaurantd</div>
+      <div class="name">{{ c.name }}</div>
     </div>
 
     <div class="spice"></div>
   </div>
 
-  <div class="btn">ADD TO CART</div>
+  <!-- <div class="btn ion-activatable">
+    <ion-ripple-effect></ion-ripple-effect>
+    ADD TO CART
+  </div> -->
+  <ion-button
+    class="btn"
+    [ngClass]="{exists: foodExists()}"
+    (click)="addToCart()"
+    [disabled]="!safeToCart() || foodExists()"
+  >
+    {{ foodExists() ? "FOOD IN CART" : "ADD TO CART" }}
+  </ion-button>
 </ion-content>

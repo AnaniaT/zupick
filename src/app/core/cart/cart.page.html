@@ -1,0 +1,59 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title color="primary"> Cart </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="cart.length <=0" class="blank-msg">
+    Oops!! Your cart doesn't have any items yet.
+  </div>
+
+  <div class="item" *ngFor="let cartItem of cart; let i = index;">
+    <div class="pic">
+      <ion-img src="{{cartItem.food.imgAddr}}"></ion-img>
+    </div>
+
+    <div class="info">
+      <div class="n">{{cartItem.food.name}}</div>
+      <div class="r">{{ cartItem.cafe.name }}</div>
+      <div class="o">
+        <div class="p">${{cartItem.food.price}}</div>
+        <div class="ctrls">
+          <div
+            class="b ion-activatable"
+            [ngClass]="{ remover: cartItem.quantity === 1}"
+            (click)="alterQuantity(i, '-')"
+          >
+            <ion-ripple-effect></ion-ripple-effect>
+            {{ cartItem.quantity > 1 ? '-' : 'x' }}
+          </div>
+          <div class="b">{{cartItem.quantity}}</div>
+          <div class="b ion-activatable" (click)="alterQuantity(i, '+')">
+            <ion-ripple-effect></ion-ripple-effect>
+            +
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer class="ion-no-border" *ngIf="cart.length > 0">
+  <ion-toolbar color="light">
+    <div class="wrapper">
+      <div class="t">
+        <div class="">Total</div>
+        <div>${{ total }}</div>
+      </div>
+      <!-- <div class="btn ion-activatable">
+        <ion-ripple-effect></ion-ripple-effect>
+        CHECK OUT
+      </div> -->
+      <ion-button class="btn"> CHECK OUT </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>
