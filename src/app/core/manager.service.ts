@@ -11,13 +11,16 @@ export class ManagerService {
   public cafes: Cafe[] = [];
   public foods: FoodItem[] = [];
   public cart: CartItem[] = [];
+  public categories: string[];
 
   constructor() {
     for (const cafe of data.cafes) {
       const foodList: FoodItem[] = [];
       for (const fId of cafe.foodList) {
         const f = data.foods[fId];
-        foodList.push(new FoodItem(fId, f.name, f.price, f.imgAddr, f.desc));
+        foodList.push(
+          new FoodItem(fId, f.name, f.price, f.imgAddr, f.desc, f.category)
+        );
       }
 
       const c = new Cafe({
@@ -31,10 +34,18 @@ export class ManagerService {
 
     for (const f of data.foods) {
       this.foods.push(
-        new FoodItem(data.foods.indexOf(f), f.name, f.price, f.imgAddr, f.desc)
+        new FoodItem(
+          data.foods.indexOf(f),
+          f.name,
+          f.price,
+          f.imgAddr,
+          f.desc,
+          f.category
+        )
       );
     }
 
+    this.categories = data.categories;
     // this.cart.push(new CartItem(this.cafes[0].foodList[0], 1, this.cafes[0]));
   }
 
@@ -58,6 +69,15 @@ export class ManagerService {
       if (f.id === id) return f;
     }
     return null;
+  }
+
+  getFoodsByCategory(categoryId: number) {
+    return this.foods.filter((f) => f.category === categoryId);
+  }
+
+  // Category related
+  getCategory(id: number) {
+    return data.categories[id] || null;
   }
 
   // Cart related

@@ -11,7 +11,8 @@ export class FoodItem {
     public name: string,
     public price: number,
     public imgAddr: string,
-    public desc: string
+    public desc: string,
+    public category: number
   ) {
     // this.id = new Date().toISOString();
   }

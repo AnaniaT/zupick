@@ -47,7 +47,7 @@ ion-content {
     // background-color: #fff;
     padding: 20px 0 0;
 
-    ion-text {
+    ion-text.title {
       font-size: 19px;
       font-weight: bold;
     }
@@ -81,11 +81,24 @@ ion-content {
           color: #333;
         }
 
+        ion-thumbnail {
+          height: 26px;
+          width: 32px;
+        }
+
         ion-text {
           font-size: 14px;
           font-weight: normal;
           margin: 3px 0;
           color: #333;
+        }
+
+        ion-skeleton-text.cName {
+          height: 16px;
+          width: 65px;
+          pointer-events: all;
+          --border-radius: 0;
+          margin: 3px 0;
         }
 
         &.selected {
@@ -104,13 +117,19 @@ ion-content {
 
       // makes the end of the horizontal scroll nice
       .spice {
-        min-width: 20px;
+        min-width: 10px;
         height: 70px;
       }
     }
   }
 
   .sub-group {
+    ion-skeleton-text.title {
+      width: 130px;
+      height: 21px;
+      margin: 0;
+    }
+
     .list {
       height: 250px;
 
@@ -131,7 +150,7 @@ ion-content {
           align-items: center;
 
           .i {
-            background-color: rgb(218, 204, 74);
+            // background-color: rgb(218, 204, 74);
             width: calc(100% - 10px);
             height: calc(100% - 10px);
             border-top-left-radius: 15px;
@@ -139,10 +158,24 @@ ion-content {
             border-bottom-left-radius: 5px;
             border-bottom-right-radius: 5px;
             overflow: hidden;
+            position: relative;
+
+            ion-img,
+            ion-thumbnail {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+
+              &.invisible {
+                position: absolute;
+                opacity: 0;
+                pointer-events: none;
+              }
+            }
           }
         }
 
-        ion-text {
+        .name {
           // background-color: #33b9a3;
           width: 100%;
           max-height: 40px;
@@ -151,6 +184,14 @@ ion-content {
           // text-overflow: ellipsis;
           // overflow: hidden;
           font-size: 16px;
+        }
+        ion-skeleton-text.name {
+          // line-height: 18px;
+          height: 19px;
+          width: 150px;
+          margin: 5px 15px 0;
+          --border-radius: 0;
+          pointer-events: auto;
         }
 
         .price {
@@ -171,6 +212,13 @@ ion-content {
             font-weight: bold;
             // border-bottom-left-radius: 20px;
             // border-bottom-right-radius: 20px;
+          }
+
+          ion-skeleton-text.p {
+            margin: 0 auto 10px 15px;
+
+            width: 50px;
+            height: 35px;
           }
         }
 

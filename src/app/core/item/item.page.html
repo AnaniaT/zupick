@@ -1,14 +1,38 @@
 <ion-content class="ion-fullscreen">
   <ion-back-button defaultHref="/home"> </ion-back-button>
+
   <div class="img-box">
-    <ion-img src="{{ food.imgAddr }}"></ion-img>
+    <ion-skeleton-text *ngIf="isLoading" animated></ion-skeleton-text>
+    <ion-img
+      *ngIf="!isLoading"
+      (ionImgDidLoad)="handleImgLoad($event)"
+      src="{{ food.imgAddr }}"
+    ></ion-img>
   </div>
+
   <div class="meta">
     <div class="info">
-      <ion-text class="name">{{ food.name }}</ion-text>
-      <ion-text class="price">${{ food.price }}</ion-text>
+      <ion-text *ngIf="!isLoading" class="name">{{ food.name }}</ion-text>
+      <ion-text *ngIf="!isLoading" class="price">${{ food.price }}</ion-text>
+      <ion-skeleton-text
+        *ngIf="isLoading"
+        class="name"
+        animated
+      ></ion-skeleton-text>
+      <ion-skeleton-text
+        *ngIf="isLoading"
+        class="price"
+        animated
+      ></ion-skeleton-text>
     </div>
-    <div class="ctrls">
+
+    <div class="ctrls" *ngIf="isLoading">
+      <ion-skeleton-text
+        *ngFor="let _ of [1, 2, 3]"
+        animated
+      ></ion-skeleton-text>
+    </div>
+    <div class="ctrls" *ngIf="!isLoading">
       <div class="b ion-activatable" (click)="alterQuantity('-')">
         <ion-ripple-effect></ion-ripple-effect>
         -
@@ -20,8 +44,25 @@
       </div>
     </div>
   </div>
-  <div class="desc">{{ food.desc }}</div>
-  <div class="list">
+
+  <div *ngIf="!isLoading" class="desc">{{ food.desc }}</div>
+  <ion-skeleton-text
+    *ngIf="isLoading"
+    animated
+    class="desc"
+  ></ion-skeleton-text>
+
+  <div class="list" *ngIf="isLoading">
+    <div class="item" *ngFor="let _ of [1, 2, 3, 4]">
+      <div class="logo">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </div>
+      <ion-skeleton-text class="name"></ion-skeleton-text>
+    </div>
+
+    <div class="spice"></div>
+  </div>
+  <div class="list" *ngIf="!isLoading">
     <div
       class="item"
       *ngFor="let c of availableCafes"
@@ -29,7 +70,11 @@
       [ngClass]="{selected: isCafeSelected(c.id)}"
     >
       <div class="logo">
-        <ion-img src="{{ c.logo }}"></ion-img>
+        <ion-img
+          (ionImgDidLoad)="handleImgLoad($event)"
+          src="{{ c.logo }}"
+        ></ion-img>
+        <ion-skeleton-text animated></ion-skeleton-text>
       </div>
       <div class="name">{{ c.name }}</div>
     </div>
@@ -37,12 +82,12 @@
     <div class="spice"></div>
   </div>
 
-  <!-- <div class="btn ion-activatable">
-    <ion-ripple-effect></ion-ripple-effect>
-    ADD TO CART
-  </div> -->
+  <div class="button" *ngIf="isLoading">
+    <ion-skeleton-text animated></ion-skeleton-text>
+  </div>
   <ion-button
     class="btn"
+    *ngIf="!isLoading"
     [ngClass]="{exists: foodExists()}"
     (click)="addToCart()"
     [disabled]="!safeToCart() || foodExists()"

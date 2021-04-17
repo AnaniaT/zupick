@@ -18,6 +18,8 @@ export class ItemPage implements OnInit {
   quantity = 0;
   cafe: Cafe = null;
 
+  isLoading = true;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -27,21 +29,19 @@ export class ItemPage implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((param) => {
-      try {
+      this.isLoading = true;
+      // Make sure that the param.id is all numbers
+      if (/^[0-9]+$/.test(param.id)) {
         this.foodId = +param.id;
-        // Forward to cart page if item already exists (may be bad UX)
-        // if (this.managerService.isFoodInCart(this.foodId)) {
-        //   this.navCtrl.pop();
-        //   return this.router.navigateByUrl('/home/cart');
-        // }
-        this.food = this.managerService.getFood(this.foodId);
-        this.availableCafes = this.managerService.getAvailableCafes(
-          this.foodId
-        );
-      } catch (e) {
-        console.log(e);
-        this.router.navigateByUrl('/home');
+        return setTimeout(() => {
+          this.food = this.managerService.getFood(this.foodId);
+          this.availableCafes = this.managerService.getAvailableCafes(
+            this.foodId
+          );
+          this.isLoading = false;
+        }, 800);
       }
+      this.router.navigateByUrl('/home');
     });
   }
 
@@ -76,5 +76,16 @@ export class ItemPage implements OnInit {
   addToCart() {
     this.managerService.addToCart(this.food, this.quantity, this.cafe);
     // this.router.navigateByUrl('/home/cart');
+  }
+
+  // General UX method for image load using setTimeout for a delay
+  handleImgLoad(e: any) {
+    setTimeout(() => {
+      const el = e.target as HTMLIonImgElement;
+      const thumbN = el.parentElement.querySelector('ion-skeleton-text');
+      // tslint:disable-next-line: curly
+      if (thumbN) thumbN.remove();
+      el.classList.remove('invisible');
+    }, 3000);
   }
 }

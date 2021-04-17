@@ -16,27 +16,26 @@
     <ion-searchbar placeholder="Search for a food item"></ion-searchbar>
   </div>
   <div class="group">
-    <ion-text>Categories</ion-text>
-    <div class="list">
-      <div class="item selected">
-        <ion-icon name="map"></ion-icon>
-        <ion-text>Burgers</ion-text>
+    <ion-text class="title">Categories</ion-text>
+    <div class="list" *ngIf="categoriesLoading">
+      <div class="item" *ngFor="let _ of [1, 2, 3, 4];">
+        <ion-thumbnail>
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-thumbnail>
+        <ion-skeleton-text class="cName" animated></ion-skeleton-text>
       </div>
-      <div class="item">
+      <div class="spice"></div>
+    </div>
+
+    <div class="list" *ngIf="!categoriesLoading">
+      <div
+        class="item"
+        *ngFor="let c of categories; let i = index;"
+        [ngClass]="{selected: c === activeCategory}"
+        (click)="changeCategory(i)"
+      >
         <ion-icon name="map"></ion-icon>
-        <ion-text>Pizza</ion-text>
-      </div>
-      <div class="item">
-        <ion-icon name="map"></ion-icon>
-        <ion-text>Sandwichs</ion-text>
-      </div>
-      <div class="item">
-        <ion-icon name="map"></ion-icon>
-        <ion-text>Sandwichs</ion-text>
-      </div>
-      <div class="item">
-        <ion-icon name="map"></ion-icon>
-        <ion-text>Sandwichs</ion-text>
+        <ion-text>{{ c }}</ion-text>
       </div>
 
       <div class="spice"></div>
@@ -44,12 +43,42 @@
   </div>
 
   <div class="sub-group">
-    <ion-text>Burgers</ion-text>
-    <div class="list">
+    <ion-skeleton-text
+      *ngIf="foodsLoading"
+      class="title"
+      animated
+    ></ion-skeleton-text>
+    <ion-text *ngIf="!foodsLoading" class="title"
+      >{{ activeCategory }}</ion-text
+    >
+    <div class="list" *ngIf="foodsLoading">
+      <div class="item" *ngFor="let _ of [1, 2, 3]">
+        <div class="img-box">
+          <div class="i">
+            <ion-thumbnail>
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-thumbnail>
+          </div>
+        </div>
+        <ion-skeleton-text class="name" animated></ion-skeleton-text>
+        <div class="price">
+          <ion-skeleton-text class="p" animated></ion-skeleton-text>
+        </div>
+      </div>
+    </div>
+
+    <div class="list" *ngIf="foods.length > 0 && !foodsLoading">
       <div class="item" *ngFor="let f of foods" [routerLink]='["item", f.id]'>
         <div class="img-box">
           <div class="i">
-            <ion-img src="{{f.imgAddr}}"></ion-img>
+            <ion-img
+              class="invisible"
+              (ionImgDidLoad)="handleImgLoad($event)"
+              src="{{f.imgAddr}}"
+            ></ion-img>
+            <ion-thumbnail>
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-thumbnail>
           </div>
         </div>
         <ion-text class="name">{{f.name}}</ion-text>

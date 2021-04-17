@@ -16,3 +16,7 @@ You better limit the characters(length of text) as follows.
 Alert:
 
 On the cart page the total updates as you click the controls however it seems working it is not actually. This is happening because both the service and the cart are refering to the same cart list (object) in memory, which will not be great after implmenting a real database.
+
+Idea:
+
+You could use ion-skeleton-text to simulate loading of the items page, cart page, home or any page that seem posible. For the home page you could use it when loading the categories with the item list for the first time and when changing categories.
