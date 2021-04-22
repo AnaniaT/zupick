@@ -16,6 +16,11 @@ ion-header {
 ion-content {
   --background: #f7f7f7;
 
+  ion-spinner {
+    display: block;
+    width: 28px;
+    margin: 30px auto 0;
+  }
   .blank-msg {
     font-size: 22px;
     text-align: center;
@@ -36,7 +41,7 @@ ion-content {
     padding: 0 15px;
 
     .pic {
-      // height: 140px;
+      min-width: 150px;
       width: 150px;
       background-color: #868080;
       border-radius: 8px;
@@ -50,7 +55,7 @@ ion-content {
     }
 
     .info {
-      flex: 1;
+      // flex: 1;
       // background-color: rgb(192, 236, 87);
       display: flex;
       flex-direction: column;
@@ -58,15 +63,26 @@ ion-content {
       padding: 0 0 0 8px;
       font-weight: bold;
 
+      max-width: calc(100% - 140px);
+      width: calc(100% - 140px);
+
       // Limit to 25 chars
       .n {
         font-size: 22px;
         margin: 0 0 8px;
+
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
       }
 
       .r {
-        font-size: 19px;
+        font-size: 18px;
         font-weight: normal;
+
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
       }
 
       .o {
@@ -135,9 +151,6 @@ ion-footer {
       }
 
       .btn {
-        // position: relative;
-        // background-color: #77c382;
-        // padding: 15px 0;
         width: calc(100% - 70px);
         height: 53px;
         margin: 0 auto;
@@ -150,6 +163,84 @@ ion-footer {
         --border-radius: 10px;
         --background: #77c382;
         // cursor: pointer;
+      }
+    }
+  }
+}
+
+@media (max-width: 390px) {
+  ion-header {
+    ion-toolbar {
+      ion-title {
+        font-size: 22px;
+      }
+    }
+  }
+  ion-content {
+    .blank-msg {
+      font-size: 20px;
+    }
+
+    .item {
+      height: 130px;
+      padding: 0 10px;
+
+      .pic {
+        min-width: 130px;
+        width: 130px;
+      }
+
+      .info {
+        padding: 0 0 0 6px;
+
+        max-width: calc(100% - 125px);
+        width: calc(100% - 125px);
+
+        .n {
+          font-size: 20px;
+        }
+
+        .r {
+          font-size: 17px;
+        }
+
+        .o {
+          .p {
+            font-size: 20px;
+          }
+          .ctrls {
+            max-height: 26px;
+            min-width: 90px;
+            max-width: 90px;
+
+            .b {
+              width: 26px;
+              height: 26px;
+              font-size: 17px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  ion-footer {
+    ion-toolbar {
+      .wrapper {
+        height: 90px;
+
+        .t {
+          height: 22px;
+          width: calc(100% - 85px);
+          font-size: 19px;
+          margin: 5px auto;
+        }
+
+        .btn {
+          width: calc(100% - 80px);
+          height: 43px;
+          font-size: 17px;
+        }
       }
     }
   }

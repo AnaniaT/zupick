@@ -9,14 +9,15 @@ import { CartItem } from '../models/cartItem.model';
 })
 export class CartPage implements OnInit {
   cart: CartItem[] = [];
+  isLoading = false;
   constructor(private managerService: ManagerService) {}
 
   ngOnInit() {
-    this.cart = this.managerService.cart;
+    this.loadCart();
   }
 
   ionViewWillEnter() {
-    this.cart = this.managerService.cart;
+    this.loadCart();
   }
 
   get total() {
@@ -25,6 +26,14 @@ export class CartPage implements OnInit {
       total += cartItem.food.price * cartItem.quantity;
     });
     return total;
+  }
+
+  private loadCart() {
+    this.isLoading = true;
+    setTimeout(() => {
+      this.cart = this.managerService.cart;
+      this.isLoading = false;
+    }, 1200);
   }
 
   alterQuantity(i: number, action: '+' | '-') {

@@ -48,9 +48,10 @@
       class="title"
       animated
     ></ion-skeleton-text>
-    <ion-text *ngIf="!foodsLoading" class="title"
-      >{{ activeCategory }}</ion-text
-    >
+    <ion-text *ngIf="!foodsLoading" class="title">
+      {{ activeCategory }}
+    </ion-text>
+
     <div class="list" *ngIf="foodsLoading">
       <div class="item" *ngFor="let _ of [1, 2, 3]">
         <div class="img-box">

@@ -11,7 +11,7 @@ You better limit the characters(length of text) as follows.
 - Name of food item => 25 chars
 - Description of food item => 175 chars
 - Restaurant name => 25 char
-  This makes it fit on the pixel 2 but for smaller devices you must handle overflowing text so as to keep the UI fine
+  This makes it fit on the pixel 2 but for smaller devices you must handle overflowing text so as to keep the UI fine. THIS IS A MUST THING TO DO. (YOU COULD USE JS AND ngAfterViewChecked LIFE CYCLE, partially implemented on the descrption on the item page. see item.page.ts)
 
 Alert:
 
@@ -19,4 +19,4 @@ On the cart page the total updates as you click the controls however it seems wo
 
 Idea:
 
-You could use ion-skeleton-text to simulate loading of the items page, cart page, home or any page that seem posible. For the home page you could use it when loading the categories with the item list for the first time and when changing categories.
+You could use ion-skeleton-text to simulate loading of the items page, cart page, home or any page that seem posible. For the home page you could use it when loading the categories with the item list for the first time and when changing categories. => DONE!! (Excluded the cart instead used spinner there)

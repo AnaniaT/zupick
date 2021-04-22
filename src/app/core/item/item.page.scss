@@ -35,10 +35,16 @@ ion-content {
       flex: 1;
       display: flex;
       flex-direction: column;
+      max-width: calc(100% - 100px);
 
       .name {
         font-weight: 600;
         font-size: 23px;
+        max-height: 27px;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       ion-skeleton-text.name {
@@ -60,6 +66,7 @@ ion-content {
     .ctrls {
       height: 100%;
       min-width: 100px;
+      max-width: 100px;
       display: flex;
       align-items: center;
 
@@ -96,9 +103,12 @@ ion-content {
     max-width: 540px;
     font-size: 17px;
     padding: 15px 30px 0;
-    text-overflow: ellipsis;
     margin: 0 auto;
-    // text-align: center;
+    overflow: hidden;
+
+    span {
+      text-overflow: ellipsis;
+    }
   }
 
   ion-skeleton-text.desc {
@@ -124,6 +134,7 @@ ion-content {
       width: 100px;
       margin: 0 5px;
       cursor: pointer;
+      overflow: hidden;
 
       .logo {
         height: 75px;
@@ -147,7 +158,6 @@ ion-content {
         }
 
         ion-skeleton-text {
-          pointer-events: all;
           margin: 0;
         }
       }
@@ -159,12 +169,14 @@ ion-content {
         width: 100%;
         text-align: center;
         padding: 7px 0 0;
-        font-size: 16px;
-        text-overflow: ellipsis;
+        font-size: 15px;
+
+        // text-overflow: ellipsis;
+        // white-space: nowrap;
+        // overflow: hidden;
       }
 
       ion-skeleton-text.name {
-        pointer-events: all;
         margin: 7px auto 0;
         width: 86px;
         min-height: 18px;
@@ -197,7 +209,7 @@ ion-content {
     // background-color: #77c382;
     width: 220px;
     height: 45px;
-    margin: 15px auto 0;
+    margin: 15px auto 20px;
     display: flex;
     // justify-content: center;
     // align-items: center;
@@ -216,5 +228,112 @@ ion-content {
     width: 220px;
     height: 45px;
     --border-radius: 40px;
+  }
+}
+
+@media (max-width: 390px) {
+  ion-content {
+    .img-box {
+      height: 280px;
+    }
+
+    .meta {
+      height: 50px;
+      padding: 7px 20px 0;
+
+      .info {
+        .name {
+          font-size: 21px;
+          min-height: 25px;
+        }
+        ion-skeleton-text.name {
+          height: 27px;
+          width: 200px;
+          margin: 0;
+        }
+
+        .price {
+          font-size: 19px;
+          height: 22px;
+        }
+
+        ion-skeleton-text.price {
+          height: 24px;
+          width: 60px;
+          margin: 2px 0 0;
+        }
+      }
+      .ctrls {
+        max-height: 29px;
+        min-width: 99px;
+        max-width: 99px;
+
+        .b {
+          width: 29px;
+          height: 29px;
+          font-size: 19px;
+        }
+
+        > ion-skeleton-text {
+          margin: 0 2px;
+          width: 34px;
+          height: 34px;
+        }
+      }
+    }
+
+    .desc {
+      height: 95px; // not changed
+      font-size: 15px;
+      padding: 15px 20px 0;
+    }
+
+    ion-skeleton-text.desc {
+      height: 80px;
+      width: 351px;
+      max-width: 540px;
+      --border-radius: 0;
+      margin: 15px auto 0;
+    }
+
+    .list {
+      height: 120px;
+      margin: 5px auto 0 auto;
+
+      .item {
+        height: 110px;
+
+        .logo {
+          height: 70px;
+          width: 80px;
+        }
+
+        .name {
+          max-height: 40px;
+          font-size: 14px;
+        }
+
+        ion-skeleton-text.name {
+          margin: 7px auto 0;
+          width: 86px;
+          min-height: 18px;
+          max-height: 18px;
+        }
+      }
+
+      .spice {
+        height: 110px;
+      }
+    }
+
+    .btn {
+      width: 190px;
+      height: 43px;
+      font-size: 16px;
+    }
+    div.button > ion-skeleton-text {
+      width: 190px;
+      height: 43px;
+    }
   }
 }

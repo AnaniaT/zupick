@@ -51,7 +51,6 @@ export class CorePage implements OnInit {
     setTimeout(() => {
       const el = e.target as HTMLIonImgElement;
       const thumbN = el.parentElement.querySelector('ion-thumbnail');
-      console.log(thumbN);
 
       thumbN.remove();
       el.classList.remove('invisible');

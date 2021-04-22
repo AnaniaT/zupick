@@ -2,6 +2,7 @@
   <ion-back-button defaultHref="/home"> </ion-back-button>
 
   <div class="img-box">
+    <!-- Skeletons for image -->
     <ion-skeleton-text *ngIf="isLoading" animated></ion-skeleton-text>
     <ion-img
       *ngIf="!isLoading"
@@ -14,6 +15,7 @@
     <div class="info">
       <ion-text *ngIf="!isLoading" class="name">{{ food.name }}</ion-text>
       <ion-text *ngIf="!isLoading" class="price">${{ food.price }}</ion-text>
+      <!-- Skeletons for name and price -->
       <ion-skeleton-text
         *ngIf="isLoading"
         class="name"
@@ -26,12 +28,6 @@
       ></ion-skeleton-text>
     </div>
 
-    <div class="ctrls" *ngIf="isLoading">
-      <ion-skeleton-text
-        *ngFor="let _ of [1, 2, 3]"
-        animated
-      ></ion-skeleton-text>
-    </div>
     <div class="ctrls" *ngIf="!isLoading">
       <div class="b ion-activatable" (click)="alterQuantity('-')">
         <ion-ripple-effect></ion-ripple-effect>
@@ -43,25 +39,25 @@
         +
       </div>
     </div>
+    <!-- Skeletons for controls -->
+    <div class="ctrls" *ngIf="isLoading">
+      <ion-skeleton-text
+        *ngFor="let _ of [1, 2, 3]"
+        animated
+      ></ion-skeleton-text>
+    </div>
   </div>
 
-  <div *ngIf="!isLoading" class="desc">{{ food.desc }}</div>
+  <div *ngIf="!isLoading" class="desc">
+    <span>{{ food.desc }}</span>
+  </div>
+  <!-- Description Skeleton -->
   <ion-skeleton-text
     *ngIf="isLoading"
     animated
     class="desc"
   ></ion-skeleton-text>
 
-  <div class="list" *ngIf="isLoading">
-    <div class="item" *ngFor="let _ of [1, 2, 3, 4]">
-      <div class="logo">
-        <ion-skeleton-text animated></ion-skeleton-text>
-      </div>
-      <ion-skeleton-text class="name"></ion-skeleton-text>
-    </div>
-
-    <div class="spice"></div>
-  </div>
   <div class="list" *ngIf="!isLoading">
     <div
       class="item"
@@ -78,13 +74,19 @@
       </div>
       <div class="name">{{ c.name }}</div>
     </div>
-
+    <div class="spice"></div>
+  </div>
+  <!-- Cafe List Skeleton -->
+  <div class="list" *ngIf="isLoading">
+    <div class="item" *ngFor="let _ of [1, 2, 3, 4]">
+      <div class="logo">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </div>
+      <ion-skeleton-text class="name"></ion-skeleton-text>
+    </div>
     <div class="spice"></div>
   </div>
 
-  <div class="button" *ngIf="isLoading">
-    <ion-skeleton-text animated></ion-skeleton-text>
-  </div>
   <ion-button
     class="btn"
     *ngIf="!isLoading"
@@ -94,4 +96,8 @@
   >
     {{ foodExists() ? "FOOD IN CART" : "ADD TO CART" }}
   </ion-button>
+  <!-- Button Skeleton -->
+  <div class="button" *ngIf="isLoading">
+    <ion-skeleton-text animated></ion-skeleton-text>
+  </div>
 </ion-content>

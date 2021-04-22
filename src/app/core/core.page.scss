@@ -91,12 +91,18 @@ ion-content {
           font-weight: normal;
           margin: 3px 0;
           color: #333;
+
+          &:not(.name) {
+            max-width: calc(100% - 15px);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+          }
         }
 
         ion-skeleton-text.cName {
           height: 16px;
           width: 65px;
-          pointer-events: all;
           --border-radius: 0;
           margin: 3px 0;
         }
@@ -181,9 +187,11 @@ ion-content {
           max-height: 40px;
           padding: 5px 15px;
           margin: 0;
-          // text-overflow: ellipsis;
-          // overflow: hidden;
           font-size: 16px;
+          // Restrict to one line
+          // text-overflow: ellipsis;
+          // white-space: nowrap;
+          // overflow: hidden;
         }
         ion-skeleton-text.name {
           // line-height: 18px;
@@ -191,7 +199,6 @@ ion-content {
           width: 150px;
           margin: 5px 15px 0;
           --border-radius: 0;
-          pointer-events: auto;
         }
 
         .price {
@@ -256,6 +263,131 @@ ion-content {
           50%
         ); // 24 is the width of the icon
       }
+    }
+  }
+}
+
+@media (max-height: 700px) and (max-width: 1024px) {
+  ion-content {
+    --padding-start: 25px;
+    --padding-top: 0;
+
+    .motto {
+      ion-text {
+        font-size: 19px;
+      }
+    }
+
+    .bar {
+      padding: 5px 10px 0 0;
+
+      ion-searchbar {
+        max-height: 38px;
+        overflow: hidden;
+      }
+    }
+
+    .group,
+    .sub-group {
+      padding: 8px 0 0;
+
+      ion-text.title {
+        font-size: 18px;
+      }
+
+      .list {
+        height: 90px;
+        padding: 5px 0 0;
+
+        .item {
+          min-width: 90px;
+          height: 65px;
+          border-radius: 20px;
+          margin: 0 7px;
+
+          ion-icon {
+            height: 23px;
+            width: 23px;
+          }
+
+          ion-thumbnail {
+            height: 23px;
+            width: 29px;
+          }
+
+          ion-text {
+            font-size: 13px;
+          }
+
+          ion-skeleton-text.cName {
+            width: 55px;
+          }
+
+          &.selected {
+            border: 1px solid #77c38280;
+          }
+        }
+      }
+    }
+
+    .sub-group {
+      padding: 5px 0 0;
+
+      ion-skeleton-text.title {
+        width: 120px;
+      }
+
+      .list {
+        height: 230px;
+
+        .item {
+          min-width: 160px;
+          width: 160px;
+          height: 190px;
+
+          .img-box {
+            height: 105px;
+          }
+
+          .name {
+            max-height: 30px;
+            padding: 5px 15px;
+          }
+
+          ion-skeleton-text.name {
+            height: 19px;
+            width: 130px;
+          }
+
+          .price {
+            width: 100%;
+
+            .p {
+              font-size: 20px;
+            }
+
+            ion-skeleton-text.p {
+              height: 28px;
+            }
+          }
+
+          &.selected {
+            border: 1px solid #77c38280;
+          }
+        }
+      }
+    }
+
+    ion-fab {
+      transform: translate(-30px, -30px);
+    }
+  }
+}
+
+@media (max-height: 580px) {
+  ion-content {
+    ion-fab {
+      transform: translate(-15px, -5px);
     }
   }
 }

@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "DeliveryApp",
+  "appId": "com.herokuapp.anania",
+  "appName": "ZuPick",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

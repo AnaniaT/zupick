@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FoodItem } from '../models/item.model';
 import { ManagerService } from '../manager.service';
@@ -24,7 +24,8 @@ export class ItemPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private managerService: ManagerService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private elRef: ElementRef
   ) {}
 
   ngOnInit() {
@@ -43,6 +44,25 @@ export class ItemPage implements OnInit {
       }
       this.router.navigateByUrl('/home');
     });
+  }
+
+  ngAfterViewChecked(): void {
+    const desc = this.elRef.nativeElement.querySelector(
+      'div.desc'
+    ) as HTMLDivElement;
+    if (desc) {
+      // Must be on the screen (loaded up)
+      let span = desc.firstElementChild as HTMLSpanElement;
+      let textHeight = span.offsetHeight;
+      if (textHeight > desc.offsetHeight) {
+        let wordList = span.textContent.trim().split(' ');
+        wordList.pop();
+        wordList.pop();
+        span.textContent = wordList.join(' ') + '...';
+      } else {
+        span.textContent = this.food.desc;
+      }
+    }
   }
 
   alterQuantity(action: '+' | '-') {
