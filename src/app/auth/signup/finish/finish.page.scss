@@ -29,3 +29,17 @@ p.note {
 ion-grid {
   margin-top: 50px;
 }
+
+@media (max-width: 390px) {
+  .form-item {
+    p.err {
+      font-size: 12px;
+      margin: 5px 0;
+    }
+  }
+
+  p.note {
+    padding: 0 25px;
+    line-height: 1.2;
+  }
+}

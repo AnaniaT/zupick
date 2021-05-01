@@ -32,7 +32,7 @@ ion-content {
   }
 
   .item {
-    height: 150px;
+    height: 140px;
     width: 100%;
     max-width: 540px;
     // background-color: rgb(179, 117, 117);
@@ -42,7 +42,7 @@ ion-content {
 
     .pic {
       min-width: 150px;
-      width: 150px;
+      width: 140px;
       background-color: #868080;
       border-radius: 8px;
       overflow: hidden;
@@ -182,12 +182,12 @@ ion-footer {
     }
 
     .item {
-      height: 130px;
-      padding: 0 10px;
+      height: 110px;
+      padding: 0 8px;
 
       .pic {
-        min-width: 130px;
-        width: 130px;
+        min-width: 110px;
+        width: 110px;
       }
 
       .info {

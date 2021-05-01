@@ -60,6 +60,14 @@ ion-content {
       overflow-x: auto;
       // overflow-y: hidden;
 
+      // Hide Scrollbar
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+      /* Chrome, Safari and Opera */
+      ::-webkit-scrollbar {
+        display: none;
+      }
+
       .item {
         outline: none;
         background-color: #fff;
@@ -269,7 +277,7 @@ ion-content {
 
 @media (max-height: 700px) and (max-width: 1024px) {
   ion-content {
-    --padding-start: 25px;
+    --padding-start: 17px;
     --padding-top: 0;
 
     .motto {

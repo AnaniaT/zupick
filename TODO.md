@@ -20,3 +20,6 @@ On the cart page the total updates as you click the controls however it seems wo
 Idea:
 
 You could use ion-skeleton-text to simulate loading of the items page, cart page, home or any page that seem posible. For the home page you could use it when loading the categories with the item list for the first time and when changing categories. => DONE!! (Excluded the cart instead used spinner there)
+
+Issue:
+There is UX/UI problem on the auth pages (both). It does not show the input (your custom one) when typing on mobile keyboard. Possible solution unkown for the time. Another one is that on the same pages there is a scrolling issue with the padding and stuff. This one should be easy just look at the code.

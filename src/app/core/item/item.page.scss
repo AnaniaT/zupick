@@ -1,6 +1,9 @@
 ion-content {
   --background: #f7f7f7;
 
+  ion-skeleton {
+    pointer-events: all;
+  }
   ion-back-button {
     color: #333;
     width: 48px;
@@ -40,7 +43,7 @@ ion-content {
       .name {
         font-weight: 600;
         font-size: 23px;
-        max-height: 27px;
+        height: 27px;
 
         white-space: nowrap;
         overflow: hidden;
@@ -49,7 +52,7 @@ ion-content {
 
       ion-skeleton-text.name {
         height: 27px;
-        width: 200px;
+        width: 90%;
         margin: 0;
       }
       .price {
@@ -127,6 +130,14 @@ ion-content {
     display: flex;
     overflow-x: auto;
     // overflow-y: hidden;
+
+    // Hide Scrollbar
+    -ms-overflow-style: none !important; /* IE and Edge */
+    scrollbar-width: none !important; /* Firefox */
+    /* Chrome, Safari and Opera */
+    ::-webkit-scrollbar {
+      display: none !important;
+    }
 
     .item {
       height: 120px;
@@ -239,17 +250,16 @@ ion-content {
 
     .meta {
       height: 50px;
-      padding: 7px 20px 0;
+      padding: 5px 20px 0;
 
       .info {
         .name {
           font-size: 21px;
-          min-height: 25px;
+          height: 25px;
         }
         ion-skeleton-text.name {
-          height: 27px;
-          width: 200px;
-          margin: 0;
+          height: 25px;
+          width: 95%;
         }
 
         .price {
@@ -258,8 +268,8 @@ ion-content {
         }
 
         ion-skeleton-text.price {
-          height: 24px;
-          width: 60px;
+          height: 20px;
+          width: 50px;
           margin: 2px 0 0;
         }
       }
@@ -275,9 +285,8 @@ ion-content {
         }
 
         > ion-skeleton-text {
-          margin: 0 2px;
-          width: 34px;
-          height: 34px;
+          width: 29px;
+          height: 29px;
         }
       }
     }
