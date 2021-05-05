@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-import { MapModalComponent } from './map-modal/map-modal.component';
-import { QuickPageComponent } from './quick-page/quick-page.component';
+import { OrderModalComponent } from './order-modal/order-modal.component';
 
 @NgModule({
-  declarations: [MapModalComponent, QuickPageComponent],
+  declarations: [OrderModalComponent],
   imports: [CommonModule, IonicModule],
-  exports: [MapModalComponent, QuickPageComponent],
+  exports: [OrderModalComponent],
 })
 export class SharedModule {}

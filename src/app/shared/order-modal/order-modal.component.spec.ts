@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { QuickPageComponent } from './quick-page.component';
+import { OrderModalComponent } from './order-modal.component';
 
-describe('QuickPageComponent', () => {
-  let component: QuickPageComponent;
-  let fixture: ComponentFixture<QuickPageComponent>;
+describe('OrderModalComponent', () => {
+  let component: OrderModalComponent;
+  let fixture: ComponentFixture<OrderModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QuickPageComponent ],
+      declarations: [ OrderModalComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(QuickPageComponent);
+    fixture = TestBed.createComponent(OrderModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

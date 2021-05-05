@@ -22,7 +22,7 @@
 
       <div class="info">
         <div class="n">{{cartItem.food.name}}</div>
-        <div class="r">{{ cartItem.cafe.name }}alwiskkdienshd</div>
+        <div class="r">{{ cartItem.cafe.name }}</div>
         <div class="o">
           <div class="p">${{cartItem.food.price}}</div>
           <div class="ctrls">
@@ -46,18 +46,16 @@
   </div>
 </ion-content>
 
-<ion-footer class="ion-no-border" *ngIf="cart.length > 0">
+<ion-footer class="ion-no-border" *ngIf="!isLoading && cart.length > 0">
   <ion-toolbar color="light">
     <div class="wrapper">
       <div class="t">
         <div class="">Total</div>
         <div>${{ total }}</div>
       </div>
-      <!-- <div class="btn ion-activatable">
-        <ion-ripple-effect></ion-ripple-effect>
+      <ion-button routerLink="/home/checkout" class="btn">
         CHECK OUT
-      </div> -->
-      <ion-button class="btn"> CHECK OUT </ion-button>
+      </ion-button>
     </div>
   </ion-toolbar>
 </ion-footer>

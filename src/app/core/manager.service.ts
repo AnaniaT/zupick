@@ -3,6 +3,7 @@ import { Cafe } from './models/cafe.model';
 import { FoodItem } from './models/item.model';
 import { data } from './db';
 import { CartItem } from './models/cartItem.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ export class ManagerService {
   public cart: CartItem[] = [];
   public categories: string[];
 
-  constructor() {
+  constructor(private router: Router) {
     for (const cafe of data.cafes) {
       const foodList: FoodItem[] = [];
       for (const fId of cafe.foodList) {
@@ -100,5 +101,15 @@ export class ManagerService {
     if (this.cart[i]) {
       this.cart = this.cart.filter((_, index) => index !== i);
     }
+  }
+
+  // Finish Order
+  finishOrder({ lat, lng }) {
+    console.log({
+      cart: this.cart,
+      location: { lat, lng },
+    });
+
+    this.router.navigateByUrl('/home');
   }
 }

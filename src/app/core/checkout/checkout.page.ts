@@ -6,57 +6,46 @@ import {
   ElementRef,
   Renderer2,
   OnDestroy,
-  Input,
 } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { environment } from 'src/environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { OrderModalComponent } from 'src/app/shared/order-modal/order-modal.component';
+import { ManagerService } from '../manager.service';
 
 @Component({
-  selector: 'app-map-modal',
-  templateUrl: './map-modal.component.html',
-  styleUrls: ['./map-modal.component.scss'],
+  selector: 'app-checkout',
+  templateUrl: './checkout.page.html',
+  styleUrls: ['./checkout.page.scss'],
 })
-export class MapModalComponent implements OnInit, OnDestroy, AfterViewInit {
+export class CheckoutPage implements OnInit {
+  isLoading = true;
+
   @ViewChild('map') mapElementRef: ElementRef;
-  @Input() centerCoords: { lat: number; lng: number; mark: boolean };
-  @Input() selectable = true;
-  @Input() screenText = { closeTxt: 'Cancel', title: 'Pick a location' };
+  // lat 7.047185, lng 38.478741 Around Atnet SHopping Blg
+  centerCoords = { lat: 7.047185, lng: 38.478741 };
 
   private googleMaps: any;
   private clickListener: any;
-  isLoading = true;
+  private map: any;
+  private marker: any;
 
   constructor(
-    private modalCtrl: ModalController,
     private renderer: Renderer2,
-    private router: Router
+    private modalCtrl: ModalController,
+    private managerService: ManagerService
   ) {}
 
-  ngOnInit() {
-    this.isLoading = true;
-  }
+  ngOnInit() {}
 
-  ngOnDestroy() {
-    if (this.clickListener) {
-      this.googleMaps.event.removeListener(this.clickListener);
-    }
-  }
-
-  ngAfterViewInit() {
+  ionViewWillEnter() {
     this.getGoogleMaps()
       .then((googleMaps) => {
         // googleMaps is actually the object returned from google maps api script
         this.googleMaps = googleMaps;
         const mapEl = this.mapElementRef.nativeElement;
-        const { lat, lng } = this.centerCoords;
-        const map = new googleMaps.Map(mapEl, {
-          // Defaults around St. Gabriel Church,
-          center: {
-            lat,
-            lng,
-          },
+        const map = new this.googleMaps.Map(mapEl, {
+          center: this.centerCoords,
           zoom: 16,
           // minZoom: 10,
           // maxZoom: 20,
@@ -70,44 +59,65 @@ export class MapModalComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             strictBounds: true,
           },
+          zoomControl: true,
+          scaleControl: false,
+          fullscreenControl: false,
+          streetViewControl: false,
+          mapTypeControl: false,
         });
-
-        if (this.centerCoords.mark) {
-          // Add marker to the center(previously selected place)
-          const marker = new googleMaps.Marker({
-            map,
-            animation: googleMaps.Animation.DROP,
-            position: { lat, lng },
-            title: this.selectable
-              ? 'Currently Picked Location'
-              : 'Place Location',
-          });
-        }
-
+        this.map = map;
         // Will fire when loading the map finishes
-        googleMaps.event.addListenerOnce(map, 'idle', () => {
+        this.googleMaps.event.addListenerOnce(this.map, 'idle', () => {
           this.renderer.addClass(mapEl, 'visible');
           this.isLoading = false;
         });
 
-        if (this.selectable) {
-          // Pass coodinate values after a click on the map
-          this.clickListener = map.addListener('click', (ev) => {
-            const selectedCoords = {
-              lat: ev.latLng.lat(),
-              lng: ev.latLng.lng(),
-            };
-            this.modalCtrl.dismiss(selectedCoords, 'picked');
-          });
-        }
+        // Pass coodinate values after a click on the map
+        this.clickListener = this.map.addListener('click', (ev) => {
+          this.locationPicked(ev.latLng.lat(), ev.latLng.lng());
+        });
       })
       .catch((err) => {
         console.log('Error', err);
       });
   }
 
-  onCancel() {
-    this.modalCtrl.dismiss();
+  private locationPicked(lat: number, lng: number) {
+    if (this.marker) {
+      this.marker.setMap(null);
+    }
+
+    this.marker = new this.googleMaps.Marker({
+      map: this.map,
+      animation: this.googleMaps.Animation.DROP,
+      position: { lat, lng },
+      title: 'Your location',
+    });
+
+    this.openModal({ lat, lng });
+  }
+
+  private openModal(location: { lat: number; lng: number }) {
+    this.modalCtrl
+      .create({
+        component: OrderModalComponent,
+        showBackdrop: true,
+        cssClass: 'order-modal',
+      })
+      .then((modal) => {
+        modal.onDidDismiss().then(({ role }) => {
+          if (role === 'ordered') {
+            return this.managerService.finishOrder(location);
+          }
+        });
+        return modal.present();
+      });
+  }
+
+  ionViewWillLeave() {
+    if (this.clickListener) {
+      this.googleMaps.event.removeListener(this.clickListener);
+    }
   }
 
   private getGoogleMaps(): Promise<any> {

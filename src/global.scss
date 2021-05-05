@@ -28,3 +28,8 @@
 .ion-invalid.ion-touched ion-label {
   color: var(--ion-color-danger);
 }
+
+.order-modal {
+  --height: 100px;
+  align-items: flex-end;
+}

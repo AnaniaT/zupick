@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { LoadingController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { LoadingController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-check',
@@ -17,7 +16,7 @@ export class CheckPage implements OnInit, OnDestroy {
   timeLimit = 60;
   resendBtnTxt = '';
 
-  constructor(private loadingCtrl: LoadingController, private router: Router) {}
+  constructor(private loadingCtrl: LoadingController, private navCtrl: NavController) {}
 
   ngOnInit() {
     this.ionViewWillEnter();
@@ -85,7 +84,7 @@ export class CheckPage implements OnInit, OnDestroy {
         loadingEL.present();
         console.log(this.form.value);
         setTimeout(() => {
-          this.router.navigateByUrl('/auth/signup/finish');
+          this.navCtrl.navigateRoot('/home');
           loadingEL.dismiss();
         }, 1000);
       });

@@ -1,0 +1,34 @@
+ion-content {
+  --background: #ddd;
+  --padding-start: 10px;
+  --padding-end: 10px;
+
+  // border-top-right-radius: 15px;
+  // border-top-left-radius: 15px;
+
+  h2.msg {
+    text-align: center;
+    color: #868080;
+    margin: 15px 0 10px;
+    font-size: 17px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  ion-button {
+    height: 45px;
+    max-width: 320px;
+    margin: 0 auto;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 370px) {
+  ion-content {
+    ion-button {
+      margin: 0 7px;
+    }
+  }
+}

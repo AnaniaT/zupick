@@ -1,0 +1,21 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home/cart"></ion-back-button>
+    </ion-buttons>
+    <ion-title color="primary"> Pick your location </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="isLoading" class="loadingBg">
+    <ion-spinner color="primary"></ion-spinner>
+  </div>
+
+  <p *ngIf="!isLoading" class="top">
+    By adding location you are accepting the <br />
+    <span class="link"> terms and conditions </span>
+  </p>
+
+  <div id="map" #map></div>
+</ion-content>
