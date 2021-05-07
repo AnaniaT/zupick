@@ -1,0 +1,28 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/home">
+        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title color="primary"> Done </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- <ion-spinner color="primary"></ion-spinner> -->
+  <h3>Order Sent</h3>
+  <div class="msg">
+    Our delivery guy will contact you to confirm the order as soon as he/she
+    recieves it. You may also be contacted for any inconvenience.
+  </div>
+
+  <div class="eta">ETA: 44 - 47 min</div>
+
+  <div class="actions">
+    <ion-button [disabled]="true" class="btn">Track Delivery</ion-button>
+    <ion-button [disabled]="true" class="btn">View Order</ion-button>
+  </div>
+
+  <div class="note">Please inform the delivery guy if anything is unclear.</div>
+</ion-content>

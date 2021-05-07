@@ -13,6 +13,9 @@ export class CorePage implements OnInit {
   foods: FoodItem[] = [];
   foodsLoading = true;
   categoriesLoading = true;
+
+  isSearched = false;
+  searchItems: FoodItem[] = [];
   constructor(private managerService: ManagerService) {}
 
   ngOnInit() {
@@ -55,5 +58,22 @@ export class CorePage implements OnInit {
       thumbN.remove();
       el.classList.remove('invisible');
     }, 3000);
+  }
+
+  onSearchFood(e: any) {
+    this.foodsLoading = true;
+    this.isSearched = true;
+    setTimeout(() => {
+      const searchTerm = e.target.value;
+      this.searchItems = this.managerService.findFood(searchTerm);
+      this.foodsLoading = false;
+    }, 750);
+  }
+
+  onSearchCancel() {
+    if (this.isSearched) {
+      this.isSearched = false;
+      this.searchItems = [];
+    }
   }
 }

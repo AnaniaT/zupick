@@ -14,6 +14,8 @@ export class ManagerService {
   public cart: CartItem[] = [];
   public categories: string[];
 
+  public ongoingOrders = [];
+
   constructor(private router: Router) {
     for (const cafe of data.cafes) {
       const foodList: FoodItem[] = [];
@@ -72,6 +74,13 @@ export class ManagerService {
     return null;
   }
 
+  findFood(searchTerm: string) {
+    searchTerm = searchTerm.trim().toLowerCase();
+    return this.foods.filter((f) =>
+      f.name.toLowerCase().startsWith(searchTerm)
+    );
+  }
+
   getFoodsByCategory(categoryId: number) {
     return this.foods.filter((f) => f.category === categoryId);
   }
@@ -105,11 +114,11 @@ export class ManagerService {
 
   // Finish Order
   finishOrder({ lat, lng }) {
-    console.log({
+    this.ongoingOrders.push({
       cart: this.cart,
       location: { lat, lng },
     });
 
-    this.router.navigateByUrl('/home');
+    this.router.navigateByUrl('/home/checkout/done');
   }
 }

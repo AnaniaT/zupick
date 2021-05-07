@@ -13,9 +13,15 @@
     <ion-text class="b"> food you love </ion-text>
   </div>
   <div class="bar">
-    <ion-searchbar placeholder="Search for a food item"></ion-searchbar>
+    <ion-searchbar
+      inputmode="search"
+      (search)="onSearchFood($event)"
+      (ionCancel)="onSearchCancel()"
+      placeholder="Search for a food item"
+      showCancelButton="focus"
+    ></ion-searchbar>
   </div>
-  <div class="group">
+  <div class="group" *ngIf="!isSearched">
     <ion-text class="title">Categories</ion-text>
     <div class="list" *ngIf="categoriesLoading">
       <div class="item" *ngFor="let _ of [1, 2, 3, 4];">
@@ -44,15 +50,25 @@
 
   <div class="sub-group">
     <ion-skeleton-text
-      *ngIf="foodsLoading"
+      *ngIf="foodsLoading && !isSearched"
       class="title"
       animated
     ></ion-skeleton-text>
-    <ion-text *ngIf="!foodsLoading" class="title">
+    <ion-text *ngIf="!foodsLoading  && !isSearched" class="title">
       {{ activeCategory }}
     </ion-text>
 
-    <div class="list" *ngIf="foodsLoading">
+    <div class="searchLoading" *ngIf="foodsLoading && isSearched">
+      <ion-spinner color="primary"></ion-spinner>
+    </div>
+    <ion-text
+      *ngIf="!foodsLoading && isSearched && searchItems.length > 0"
+      class="title"
+    >
+      Search Result
+    </ion-text>
+
+    <div class="list" *ngIf="foodsLoading && !isSearched">
       <div class="item" *ngFor="let _ of [1, 2, 3]">
         <div class="img-box">
           <div class="i">
@@ -68,26 +84,60 @@
       </div>
     </div>
 
-    <div class="list" *ngIf="foods.length > 0 && !foodsLoading">
-      <div class="item" *ngFor="let f of foods" [routerLink]='["item", f.id]'>
-        <div class="img-box">
-          <div class="i">
-            <ion-img
-              class="invisible"
-              (ionImgDidLoad)="handleImgLoad($event)"
-              src="{{f.imgAddr}}"
-            ></ion-img>
-            <ion-thumbnail>
-              <ion-skeleton-text animated></ion-skeleton-text>
-            </ion-thumbnail>
+    <div class="list" *ngIf="!foodsLoading">
+      <div class="wrapper" *ngIf="foods.length > 0 && !isSearched">
+        <div class="item" *ngFor="let f of foods" [routerLink]='["item", f.id]'>
+          <div class="img-box">
+            <div class="i">
+              <ion-img
+                class="invisible"
+                (ionImgDidLoad)="handleImgLoad($event)"
+                src="{{f.imgAddr}}"
+              ></ion-img>
+              <ion-thumbnail>
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </ion-thumbnail>
+            </div>
+          </div>
+          <ion-text class="name">{{f.name}}</ion-text>
+          <div class="price">
+            <div class="p">${{f.price}}</div>
           </div>
         </div>
-        <ion-text class="name">{{f.name}}</ion-text>
-        <div class="price">
-          <div class="p">${{f.price}}</div>
-        </div>
+        <div class="spice"></div>
       </div>
-      <div class="spice"></div>
+      <h3 class="empty-msg" *ngIf="foods.length <= 0 && !isSearched">
+        There is no food catagorized here yet.
+      </h3>
+
+      <div class="wrapper" *ngIf="searchItems.length > 0 && isSearched">
+        <div
+          class="item"
+          *ngFor="let f of searchItems"
+          [routerLink]='["item", f.id]'
+        >
+          <div class="img-box">
+            <div class="i">
+              <ion-img
+                class="invisible"
+                (ionImgDidLoad)="handleImgLoad($event)"
+                src="{{f.imgAddr}}"
+              ></ion-img>
+              <ion-thumbnail>
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </ion-thumbnail>
+            </div>
+          </div>
+          <ion-text class="name">{{f.name}}</ion-text>
+          <div class="price">
+            <div class="p">${{f.price}}</div>
+          </div>
+        </div>
+        <div class="spice"></div>
+      </div>
+      <h3 class="empty-msg" *ngIf="searchItems.length <= 0 && isSearched">
+        Could not find your food. Please try another one.
+      </h3>
     </div>
   </div>
 

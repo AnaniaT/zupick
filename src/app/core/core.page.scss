@@ -144,8 +144,22 @@ ion-content {
       margin: 0;
     }
 
+    .searchLoading {
+      margin: 30px auto 0;
+      width: fit-content;
+    }
+
     .list {
       height: 250px;
+
+      > div.wrapper {
+        display: contents;
+      }
+
+      h3.empty-msg {
+        font-size: 18px;
+        text-align: center;
+      }
 
       .item {
         min-width: 180px;
