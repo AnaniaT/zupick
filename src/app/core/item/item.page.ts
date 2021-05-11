@@ -42,10 +42,11 @@ export class ItemPage implements OnInit {
           this.isLoading = false;
         }, 800);
       }
-      this.router.navigateByUrl('/home');
+      this.navCtrl.back();
     });
   }
 
+  // tslint:disable-next-line: use-lifecycle-interface
   ngAfterViewChecked(): void {
     const desc = this.elRef.nativeElement.querySelector(
       'div.desc'

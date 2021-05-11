@@ -211,9 +211,9 @@ ion-content {
           margin: 0;
           font-size: 16px;
           // Restrict to one line
-          // text-overflow: ellipsis;
-          // white-space: nowrap;
-          // overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
         }
         ion-skeleton-text.name {
           // line-height: 18px;

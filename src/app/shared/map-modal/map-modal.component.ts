@@ -6,46 +6,59 @@ import {
   ElementRef,
   Renderer2,
   OnDestroy,
+  Input,
 } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { environment } from 'src/environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
-import { OrderModalComponent } from 'src/app/shared/order-modal/order-modal.component';
-import { ManagerService } from '../manager.service';
+import { Router } from '@angular/router';
+import { OrderModalComponent } from '../order-modal/order-modal.component';
 
 @Component({
-  selector: 'app-checkout',
-  templateUrl: './checkout.page.html',
-  styleUrls: ['./checkout.page.scss'],
+  selector: 'app-map-modal',
+  templateUrl: './map-modal.component.html',
+  styleUrls: ['./map-modal.component.scss'],
 })
-export class CheckoutPage implements OnInit {
-  isLoading = true;
-
+export class MapModalComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('map') mapElementRef: ElementRef;
-  // lat 7.047185, lng 38.478741 Around Atnet SHopping Blg
-  centerCoords = { lat: 7.047185, lng: 38.478741 };
+  @Input() centerCoords: { lat: number; lng: number; mark: boolean };
+  @Input() modalTitle: string;
+  @Input() isCheckout: boolean;
 
   private googleMaps: any;
   private clickListener: any;
   private map: any;
   private marker: any;
 
+  isLoading = true;
+
   constructor(
-    private renderer: Renderer2,
     private modalCtrl: ModalController,
-    private managerService: ManagerService
+    private renderer: Renderer2,
+    private router: Router
   ) {}
 
   ngOnInit() {}
 
-  ionViewWillEnter() {
+  ngOnDestroy() {
+    if (this.clickListener) {
+      this.googleMaps.event.removeListener(this.clickListener);
+    }
+  }
+
+  ngAfterViewInit() {
     this.getGoogleMaps()
       .then((googleMaps) => {
         // googleMaps is actually the object returned from google maps api script
         this.googleMaps = googleMaps;
         const mapEl = this.mapElementRef.nativeElement;
-        const map = new this.googleMaps.Map(mapEl, {
-          center: this.centerCoords,
+        const { lat, lng } = this.centerCoords;
+        const map = new googleMaps.Map(mapEl, {
+          // Defaults around St. Gabriel Church,
+          center: {
+            lat,
+            lng,
+          },
           zoom: 16,
           // minZoom: 10,
           // maxZoom: 20,
@@ -66,16 +79,29 @@ export class CheckoutPage implements OnInit {
           mapTypeControl: false,
         });
         this.map = map;
+
+        if (this.centerCoords.mark) {
+          // Add marker to the center (previously selected place)
+          this.marker = new googleMaps.Marker({
+            map,
+            // animation: googleMaps.Animation.DROP,
+            position: { lat, lng },
+            title: 'Delivery Location',
+          });
+        }
+
         // Will fire when loading the map finishes
-        this.googleMaps.event.addListenerOnce(this.map, 'idle', () => {
+        googleMaps.event.addListenerOnce(map, 'idle', () => {
           this.renderer.addClass(mapEl, 'visible');
           this.isLoading = false;
         });
 
-        // Pass coodinate values after a click on the map
-        this.clickListener = this.map.addListener('click', (ev) => {
-          this.locationPicked(ev.latLng.lat(), ev.latLng.lng());
-        });
+        if (this.isCheckout) {
+          // Pass coodinate values after a click on the map
+          this.clickListener = map.addListener('click', (ev) => {
+            this.locationPicked(ev.latLng.lat(), ev.latLng.lng());
+          });
+        }
       })
       .catch((err) => {
         console.log('Error', err);
@@ -89,7 +115,7 @@ export class CheckoutPage implements OnInit {
 
     this.marker = new this.googleMaps.Marker({
       map: this.map,
-      animation: this.googleMaps.Animation.DROP,
+      // animation: this.googleMaps.Animation.DROP,
       position: { lat, lng },
       title: 'Your location',
     });
@@ -100,6 +126,7 @@ export class CheckoutPage implements OnInit {
   private openModal(location: { lat: number; lng: number }) {
     this.modalCtrl
       .create({
+        id: 'order-modal',
         component: OrderModalComponent,
         showBackdrop: true,
         cssClass: 'order-modal',
@@ -107,17 +134,15 @@ export class CheckoutPage implements OnInit {
       .then((modal) => {
         modal.onDidDismiss().then(({ role }) => {
           if (role === 'ordered') {
-            return this.managerService.finishOrder(location);
+            this.modalCtrl.dismiss(location, 'done', 'checkout-modal');
           }
         });
         return modal.present();
       });
   }
 
-  ionViewWillLeave() {
-    if (this.clickListener) {
-      this.googleMaps.event.removeListener(this.clickListener);
-    }
+  onCancel() {
+    this.modalCtrl.dismiss();
   }
 
   private getGoogleMaps(): Promise<any> {

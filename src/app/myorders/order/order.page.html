@@ -1,0 +1,45 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/myorders"></ion-back-button>
+    </ion-buttons>
+    <ion-title color="primary"> Order Detail </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-spinner *ngIf="isLoading" color="primary"></ion-spinner>
+  <div class="wrapper" *ngIf="!isLoading">
+    <div class="meta">
+      <div class="line">
+        <div>On May 7, 2021 5:48 AM</div>
+        <div class="status">ongoing</div>
+      </div>
+      <div class="line">
+        <div>Order ID: {{ orderID + 1 }}</div>
+        <div>Total: <b>${{ total }}</b></div>
+      </div>
+    </div>
+
+    <!-- Ripple effect to be added and show the destination on a map using a modal -->
+    <div class="dest ion-activatable" (click)="showDest()">
+      <ion-ripple-effect></ion-ripple-effect>
+      <div class="title">Delivery Destination</div>
+      <ion-icon name="arrow-forward"></ion-icon>
+    </div>
+
+    <div class="cart-item" *ngFor="let cartItem of order.cart">
+      <div class="pic">
+        <ion-img src="{{cartItem.food.imgAddr}}"></ion-img>
+      </div>
+
+      <div class="info">
+        <div class="n">{{cartItem.food.name}}</div>
+        <div class="r">{{cartItem.cafe.name}}</div>
+        <div class="p">${{cartItem.food.price}}</div>
+      </div>
+
+      <div class="quantity">x{{cartItem.quantity}}</div>
+    </div>
+  </div>
+</ion-content>

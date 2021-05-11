@@ -3,7 +3,8 @@ import { Cafe } from './models/cafe.model';
 import { FoodItem } from './models/item.model';
 import { data } from './db';
 import { CartItem } from './models/cartItem.model';
-import { Router } from '@angular/router';
+import { Order } from './models/order.model';
+import { NavController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root',
@@ -14,9 +15,9 @@ export class ManagerService {
   public cart: CartItem[] = [];
   public categories: string[];
 
-  public ongoingOrders = [];
+  public orders: Order[] = [];
 
-  constructor(private router: Router) {
+  constructor(private navCtrl: NavController) {
     for (const cafe of data.cafes) {
       const foodList: FoodItem[] = [];
       for (const fId of cafe.foodList) {
@@ -49,7 +50,23 @@ export class ManagerService {
     }
 
     this.categories = data.categories;
-    // this.cart.push(new CartItem(this.cafes[0].foodList[0], 1, this.cafes[0]));
+    this.cart.push(new CartItem(this.cafes[0].foodList[0], 1, this.cafes[0]));
+    this.orders = [
+      {
+        cart: [
+          new CartItem(this.cafes[0].foodList[0], 2, this.cafes[0]),
+          new CartItem(this.cafes[2].foodList[1], 3, this.cafes[2]),
+        ],
+        location: { lat: 7.043778, lng: 38.479427 },
+      },
+      {
+        cart: [
+          new CartItem(this.cafes[1].foodList[2], 1, this.cafes[1]),
+          new CartItem(this.cafes[3].foodList[3], 4, this.cafes[3]),
+        ],
+        location: { lat: 7.043778, lng: 38.479427 },
+      },
+    ];
   }
 
   // Cafe related
@@ -112,13 +129,31 @@ export class ManagerService {
     }
   }
 
-  // Finish Order
+  // Order Related
   finishOrder({ lat, lng }) {
-    this.ongoingOrders.push({
+    this.orders.push({
       cart: this.cart,
       location: { lat, lng },
     });
 
-    this.router.navigateByUrl('/home/checkout/done');
+    this.cart = [];
+    this.navCtrl.navigateRoot('/home/cart/done');
+  }
+
+  getOrder(index: number) {
+    return this.orders[index] || null;
+  }
+
+  calcAmt(cart: CartItem[]): number {
+    let total = 0;
+    cart.forEach((cartItem) => {
+      total += cartItem.food.price * cartItem.quantity;
+    });
+    return total;
+  }
+
+  getStat(order: Order): 'hourglass-outline' | 'checkmark-done' {
+    // check if the order is done and decide
+    return 'hourglass-outline';
   }
 }

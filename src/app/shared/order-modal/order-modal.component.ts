@@ -12,6 +12,6 @@ export class OrderModalComponent implements OnInit {
   ngOnInit() {}
 
   onOrder() {
-    this.modalCtrl.dismiss('data', 'ordered');
+    this.modalCtrl.dismiss(null, 'ordered', 'order-modal');
   }
 }

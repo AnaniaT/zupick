@@ -1,0 +1,50 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button menuId="m1"></ion-menu-button>
+    </ion-buttons>
+    <ion-title color="primary"> My Orders </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="loading" *ngIf="isLoading">
+    <ion-spinner color="primary"></ion-spinner>
+  </div>
+
+  <div class="empty-msg" *ngIf="myorders.length <= 0 && !isLoading">
+    Ouch!! You haven't made any orders yet.
+  </div>
+
+  <div class="item" *ngFor="let o of myorders; let i = index;" [routerLink]="i">
+    <div class="main">
+      <div class="id">Order #{{i + 1 }}</div>
+      <div class="date">On May 7, 2021 5:48 AM</div>
+      <div class="amt">Amount: ${{ calcAmt( o.cart) }}</div>
+    </div>
+    <div class="status">
+      <ion-icon color="primary" name="{{ getStat(o) }}"></ion-icon>
+    </div>
+  </div>
+  <hr />
+  <div class="item">
+    <div class="main">
+      <div class="id">Order #779382</div>
+      <div class="date">On May 7, 2021 5:48 AM</div>
+      <div class="amt">Amount: $245.00</div>
+    </div>
+    <div class="status">
+      <ion-icon color="primary" name="hourglass-outline"></ion-icon>
+    </div>
+  </div>
+  <div class="item">
+    <div class="main">
+      <div class="id">Order #779382</div>
+      <div class="date">On May 7, 2021 5:48 AM</div>
+      <div class="amt">Amount: $245.00</div>
+    </div>
+    <div class="status">
+      <ion-icon color="primary" name="checkmark-done"></ion-icon>
+    </div>
+  </div>
+</ion-content>

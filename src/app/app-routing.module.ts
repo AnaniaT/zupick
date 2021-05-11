@@ -13,6 +13,11 @@ const routes: Routes = [
       import('./auth/auth.module').then((m) => m.AuthPageModule),
   },
   {
+    path: 'myorders',
+    loadChildren: () =>
+      import('./myorders/myorders.module').then((m) => m.MyordersPageModule),
+  },
+  {
     path: '',
     redirectTo: 'auth',
     pathMatch: 'full',
