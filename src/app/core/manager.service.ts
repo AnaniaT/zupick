@@ -50,23 +50,23 @@ export class ManagerService {
     }
 
     this.categories = data.categories;
-    this.cart.push(new CartItem(this.cafes[0].foodList[0], 1, this.cafes[0]));
-    this.orders = [
-      {
-        cart: [
-          new CartItem(this.cafes[0].foodList[0], 2, this.cafes[0]),
-          new CartItem(this.cafes[2].foodList[1], 3, this.cafes[2]),
-        ],
-        location: { lat: 7.043778, lng: 38.479427 },
-      },
-      {
-        cart: [
-          new CartItem(this.cafes[1].foodList[2], 1, this.cafes[1]),
-          new CartItem(this.cafes[3].foodList[3], 4, this.cafes[3]),
-        ],
-        location: { lat: 7.043778, lng: 38.479427 },
-      },
-    ];
+    // this.cart.push(new CartItem(this.cafes[0].foodList[0], 1, this.cafes[0]));
+    // this.orders = [
+    //   {
+    //     cart: [
+    //       new CartItem(this.cafes[0].foodList[0], 2, this.cafes[0]),
+    //       new CartItem(this.cafes[2].foodList[1], 3, this.cafes[2]),
+    //     ],
+    //     location: { lat: 7.043778, lng: 38.479427 },
+    //   },
+    //   {
+    //     cart: [
+    //       new CartItem(this.cafes[1].foodList[2], 1, this.cafes[1]),
+    //       new CartItem(this.cafes[3].foodList[3], 4, this.cafes[3]),
+    //     ],
+    //     location: { lat: 7.043778, lng: 38.479427 },
+    //   },
+    // ];
   }
 
   // Cafe related
