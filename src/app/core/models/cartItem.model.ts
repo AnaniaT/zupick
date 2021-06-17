@@ -1,5 +1,5 @@
-import { FoodItem } from './item.model';
-import { Cafe } from './cafe.model';
+import { FoodItem, FoodItemInterface } from './item.model';
+import { Cafe, CafeInterface } from './cafe.model';
 
 export class CartItem {
   constructor(
@@ -7,4 +7,10 @@ export class CartItem {
     public quantity: number,
     public cafe: Cafe
   ) {}
+}
+
+export interface CartItemInterface {
+  food: FoodItemInterface;
+  quantity: number;
+  cafe: CafeInterface;
 }

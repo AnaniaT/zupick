@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FoodItem } from '../models/item.model';
+import { FoodItem, FoodItemInterface } from '../models/item.model';
 import { ManagerService } from '../manager.service';
-import { Cafe } from '../models/cafe.model';
+import { Cafe, CafeInterface } from '../models/cafe.model';
 import { CartItem } from '../models/cartItem.model';
 import { NavController } from '@ionic/angular';
+import { tap, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-item',
@@ -12,11 +13,11 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./item.page.scss'],
 })
 export class ItemPage implements OnInit {
-  foodId: number;
-  food: FoodItem = null;
-  availableCafes: Cafe[] = null;
+  foodId: string;
+  food: FoodItemInterface = null;
+  // availableCafes: Cafe[] = null;
   quantity = 0;
-  cafe: Cafe = null;
+  selectedCafe: CafeInterface = null;
 
   isLoading = true;
 
@@ -31,18 +32,19 @@ export class ItemPage implements OnInit {
   ngOnInit() {
     this.route.params.subscribe((param) => {
       this.isLoading = true;
-      // Make sure that the param.id is all numbers
-      if (/^[0-9]+$/.test(param.id)) {
-        this.foodId = +param.id;
-        return setTimeout(() => {
-          this.food = this.managerService.getFood(this.foodId);
-          this.availableCafes = this.managerService.getAvailableCafes(
-            this.foodId
-          );
-          this.isLoading = false;
-        }, 800);
-      }
-      this.navCtrl.back();
+      this.foodId = param.id;
+      this.managerService
+        .getFood(this.foodId)
+        .pipe(take(1))
+        .subscribe(
+          (food) => {
+            this.food = food;
+            this.isLoading = false;
+          },
+          () => {
+            this.navCtrl.navigateBack('/home');
+          }
+        );
     });
   }
 
@@ -53,10 +55,10 @@ export class ItemPage implements OnInit {
     ) as HTMLDivElement;
     if (desc) {
       // Must be on the screen (loaded up)
-      let span = desc.firstElementChild as HTMLSpanElement;
-      let textHeight = span.offsetHeight;
+      const span = desc.firstElementChild as HTMLSpanElement;
+      const textHeight = span.offsetHeight;
       if (textHeight > desc.offsetHeight) {
-        let wordList = span.textContent.trim().split(' ');
+        const wordList = span.textContent.trim().split(' ');
         wordList.pop();
         wordList.pop();
         span.textContent = wordList.join(' ') + '...';
@@ -75,15 +77,14 @@ export class ItemPage implements OnInit {
     }
   }
 
-  cafeSelect(cafeId: string | number) {
-    this.cafe = this.managerService.getCafe(cafeId);
+  selectCafe(cafe: CafeInterface) {
+    this.selectedCafe = cafe;
   }
 
-  isCafeSelected(id: number): boolean {
-    if (this.cafe) {
-      return this.cafe.id === id;
-    }
-    return false;
+  isCafeSelected(cafe: CafeInterface) {
+    // tslint:disable-next-line: curly
+    if (!this.selectedCafe) return false;
+    return cafe.id === this.selectedCafe.id;
   }
 
   foodExists(): boolean {
@@ -91,12 +92,15 @@ export class ItemPage implements OnInit {
   }
 
   safeToCart(): boolean {
-    return this.quantity > 0 && this.quantity < 100 && this.cafe !== null;
+    return (
+      this.quantity > 0 && this.quantity < 100 && this.selectedCafe !== null
+    );
   }
 
   addToCart() {
-    this.managerService.addToCart(this.food, this.quantity, this.cafe);
-    // this.router.navigateByUrl('/home/cart');
+    this.managerService
+      .addToCart(this.food, this.quantity, this.selectedCafe)
+      .subscribe();
   }
 
   // General UX method for image load using setTimeout for a delay

@@ -36,12 +36,12 @@
     <div class="list" *ngIf="!categoriesLoading">
       <div
         class="item"
-        *ngFor="let c of categories; let i = index;"
-        [ngClass]="{selected: c === activeCategory}"
-        (click)="changeCategory(i)"
+        *ngFor="let c of categories;"
+        [ngClass]="{selected: c.id === activeCategory.id}"
+        (click)="changeCategory(c.id)"
       >
         <ion-icon name="map"></ion-icon>
-        <ion-text>{{ c }}</ion-text>
+        <ion-text>{{ c.name }}</ion-text>
       </div>
 
       <div class="spice"></div>
@@ -55,7 +55,7 @@
       animated
     ></ion-skeleton-text>
     <ion-text *ngIf="!foodsLoading  && !isSearched" class="title">
-      {{ activeCategory }}
+      {{ activeCategory.name }}
     </ion-text>
 
     <div class="searchLoading" *ngIf="foodsLoading && isSearched">

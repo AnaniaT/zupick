@@ -61,9 +61,9 @@
   <div class="list" *ngIf="!isLoading">
     <div
       class="item"
-      *ngFor="let c of availableCafes"
-      (click)="cafeSelect(c.id)"
-      [ngClass]="{selected: isCafeSelected(c.id)}"
+      *ngFor="let c of food.availableAt"
+      (click)="selectCafe(c)"
+      [ngClass]="{selected: isCafeSelected(c)}"
     >
       <div class="logo">
         <ion-img

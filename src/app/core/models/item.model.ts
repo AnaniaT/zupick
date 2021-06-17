@@ -1,8 +1,13 @@
-interface FoodItemInterface {
-  imgAddr: string;
+import { CafeInterface } from './cafe.model';
+
+export interface FoodItemInterface {
+  id: string;
   name: string;
-  price: number;
-  desc: string;
+  price?: number;
+  imgAddr?: string;
+  desc?: string;
+  category?: string;
+  availableAt?: CafeInterface[];
 }
 
 export class FoodItem {

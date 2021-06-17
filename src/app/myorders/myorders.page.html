@@ -16,18 +16,15 @@
     Ouch!! You haven't made any orders yet.
   </div>
 
-  <div
-    class="item"
-    *ngFor="let o of myorders.reverse(); let i = index;"
-    [routerLink]="myorders.length - 1 - i"
-  >
+  <div class="item" *ngFor="let o of myorders" [routerLink]="o.id">
     <div class="main">
-      <div class="id">Order #{{ 779382 + myorders.length - 1 - i }}</div>
-      <div class="date">On May 7, 2021 5:48 AM</div>
+      <!-- showing the last 8 characters of the id -->
+      <div class="id">Order #{{ o.id.slice(o.id.length - 8) }}</div>
+      <div class="date">{{ serializeTime(o.orderedAt) }}</div>
       <div class="amt">Amount: ${{ calcAmt( o.cart) }}</div>
     </div>
     <div class="status">
-      <ion-icon color="primary" name="{{ getStat(o) }}"></ion-icon>
+      <ion-icon color="primary" name="{{ getStatusIcon(o.status) }}"></ion-icon>
     </div>
   </div>
 </ion-content>

@@ -4,6 +4,11 @@ import { Order } from 'src/app/core/models/order.model';
 import { ManagerService } from 'src/app/core/manager.service';
 import { NavController, ModalController } from '@ionic/angular';
 import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
+
+// tslint:disable: curly
 
 @Component({
   selector: 'app-order',
@@ -12,7 +17,6 @@ import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component'
 })
 export class OrderPage implements OnInit {
   order: Order = null;
-  orderID: number = null;
   isLoading = false;
 
   constructor(
@@ -25,23 +29,38 @@ export class OrderPage implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(({ id }) => {
       this.isLoading = true;
-      // Make sure that the param.id is all numbers
-      if (/^[0-9]+$/.test(id)) {
-        this.orderID = +id;
-        return setTimeout(() => {
-          this.order = this.managerSevice.getOrder(id);
-          if (!this.order) {
-            this.navCtrl.back();
-          }
-          this.isLoading = false;
-        }, 750);
-      }
-      this.navCtrl.back();
+      this.managerSevice.getOrder(id).subscribe((order) => {
+        this.order = order;
+        if (!this.order) {
+          return this.navCtrl.back();
+        }
+        this.isLoading = false;
+      });
     });
   }
 
-  get total() {
-    return this.managerSevice.calcAmt(this.order.cart);
+  getTotal() {
+    let total = 0;
+    this.order.cart.forEach((cartItem) => {
+      total += cartItem.food.price * cartItem.quantity;
+    });
+    return total;
+  }
+
+  serializeTime(t: string) {
+    const dateTime = dayjs(t);
+    const diff = dayjs().diff(dateTime);
+
+    let fStr = null;
+    // tslint:disable-next-line: quotemark
+    if (diff > 1000 * 60 * 60 * 24 * 365) fStr = "MMM D'YY";
+    else if (diff > 1000 * 60 * 60 * 24 * 30) fStr = 'ddd, MMM D';
+    else if (diff > 1000 * 60 * 60 * 24 * 7) fStr = 'MMM D, hh:mm a';
+    else if (diff > 1000 * 60 * 60 * 24 * 1) fStr = 'ddd, hh:mm a';
+    // else is not needed
+
+    if (fStr) return 'On ' + dateTime.format(fStr);
+    return dateTime.fromNow();
   }
 
   showDest() {

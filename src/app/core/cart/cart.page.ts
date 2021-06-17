@@ -1,28 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ManagerService } from '../manager.service';
-import { CartItem } from '../models/cartItem.model';
+import { CartItem, CartItemInterface } from '../models/cartItem.model';
 import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
+import { CafeInterface } from '../models/cafe.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.page.html',
   styleUrls: ['./cart.page.scss'],
 })
-export class CartPage implements OnInit {
-  cart: CartItem[] = [];
+export class CartPage implements OnInit, OnDestroy {
+  cart: CartItemInterface[] = [];
+  cartSub: Subscription;
   isLoading = false;
   constructor(
     private managerService: ManagerService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private navCtrl: NavController
   ) {}
 
   ngOnInit() {
-    this.loadCart();
+    this.cartSub = this.managerService.cart.subscribe((cart) => {
+      this.cart = cart;
+    });
   }
-
-  ionViewWillEnter() {
-    this.loadCart();
+  ngOnDestroy() {
+    this.cartSub.unsubscribe();
   }
 
   get total() {
@@ -33,33 +38,12 @@ export class CartPage implements OnInit {
     return total;
   }
 
-  private loadCart() {
-    this.isLoading = true;
-    setTimeout(() => {
-      this.cart = this.managerService.cart;
-      this.isLoading = false;
-    }, 1200);
-  }
-
   alterQuantity(i: number, action: '+' | '-') {
     const cartItem = this.cart[i];
     // tslint:disable-next-line: curly
     if (cartItem === undefined) return;
-    if (action === '+') {
-      this.managerService.updateItemQuantity(i, cartItem.quantity + 1);
-      this.cart = this.managerService.cart;
-      // this.cart[i].quantity++;
-    }
-    if (action === '-') {
-      if (cartItem.quantity > 1) {
-        this.managerService.updateItemQuantity(i, cartItem.quantity - 1);
-        this.cart = this.managerService.cart;
-        // this.cart[i].quantity--;
-      } else {
-        this.managerService.removeItem(i);
-        this.cart = this.managerService.cart;
-      }
-    }
+
+    this.managerService.alterItemQuantity(cartItem, action);
   }
 
   onCheckout() {
@@ -77,7 +61,17 @@ export class CartPage implements OnInit {
       .then((modal) => {
         modal.onDidDismiss().then(({ data, role }) => {
           if (role === 'done') {
-            return this.managerService.finishOrder(data);
+            this.isLoading = true;
+            this.managerService.finishOrder(data).subscribe(
+              () => {
+                this.navCtrl.navigateRoot('/home/cart/done');
+                this.isLoading = false;
+              },
+              (err) => {
+                console.log(err);
+                console.log(err.message);
+              }
+            );
           }
         });
         return modal.present();

@@ -12,12 +12,13 @@
   <div class="wrapper" *ngIf="!isLoading">
     <div class="meta">
       <div class="line">
-        <div>On May 7, 2021 5:48 AM</div>
-        <div class="status">ongoing</div>
+        <div class="date">{{ serializeTime(order.orderedAt) }}</div>
+        <div class="status">{{ order.status }}</div>
       </div>
       <div class="line">
-        <div>Order ID: {{ 779382 + orderID }}</div>
-        <div>Total: <b>${{ total }}</b></div>
+        <!-- showing the last 8 characters of the id -->
+        <div>Order ID: {{ order.id.slice(order.id.length - 8) }}</div>
+        <div>Total: <b>${{ getTotal() }}</b></div>
       </div>
     </div>
 
@@ -34,9 +35,9 @@
       </div>
 
       <div class="info">
-        <div class="n">{{cartItem.food.name}}</div>
-        <div class="r">{{cartItem.cafe.name}}</div>
-        <div class="p">${{cartItem.food.price}}</div>
+        <div class="n">{{ cartItem.food.name }}</div>
+        <div class="r">{{ cartItem.cafe.name }}</div>
+        <div class="p">${{ cartItem.food.price }}</div>
       </div>
 
       <div class="quantity">x{{cartItem.quantity}}</div>

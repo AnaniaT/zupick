@@ -13,6 +13,8 @@ You better limit the characters(length of text) as follows.
 - Restaurant name => 25 char
   This makes it fit on the pixel 2 but for smaller devices you must handle overflowing text so as to keep the UI fine. THIS IS A MUST THING TO DO. (YOU COULD USE JS AND ngAfterViewChecked LIFE CYCLE, partially implemented on the descrption on the item page. see item.page.ts)
 
+Implement a native storage feature of ionic to the app.
+
 Alert:
 
 On the cart page the total updates as you click the controls however it seems working it is not actually. This is happening because both the service and the cart are refering to the same cart list (object) in memory, which will not be great after implmenting a real database.

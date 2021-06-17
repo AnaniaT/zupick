@@ -1,159 +1,228 @@
+// tslint:disable: variable-name // removes the warning for the underscored var names
 import { Injectable } from '@angular/core';
-import { Cafe } from './models/cafe.model';
-import { FoodItem } from './models/item.model';
-import { data } from './db';
-import { CartItem } from './models/cartItem.model';
+import { Apollo } from 'apollo-angular';
+import { map, tap, take, switchMap } from 'rxjs/operators';
+import { CafeInterface } from './models/cafe.model';
+import { FoodItemInterface } from './models/item.model';
+import { CartItemInterface } from './models/cartItem.model';
 import { Order } from './models/order.model';
-import { NavController } from '@ionic/angular';
+import { Observable, BehaviorSubject } from 'rxjs';
+import {
+  ADD_ORDER_MUTATION,
+  GET_CATEGORIES,
+  GET_ORDERS,
+  GET_FOOD,
+  SEARCH_FOOD,
+  FILTER_FOOD_BY_CATEGORY,
+} from './graphQueries';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ManagerService {
-  public cafes: Cafe[] = [];
-  public foods: FoodItem[] = [];
-  public cart: CartItem[] = [];
-  public categories: string[];
+  private _cart = new BehaviorSubject<CartItemInterface[]>([]);
+  get cart() {
+    return this._cart.asObservable();
+  }
 
-  public orders: Order[] = [];
-
-  constructor(private navCtrl: NavController) {
-    for (const cafe of data.cafes) {
-      const foodList: FoodItem[] = [];
-      for (const fId of cafe.foodList) {
-        const f = data.foods[fId];
-        foodList.push(
-          new FoodItem(fId, f.name, f.price, f.imgAddr, f.desc, f.category)
+  private _orders = new BehaviorSubject<Order[]>([]);
+  private _ordersLoaded = false;
+  get orders() {
+    if (!this._ordersLoaded) {
+      return this.apollo
+        .query<any>({
+          query: GET_ORDERS,
+        })
+        .pipe(
+          take(1),
+          switchMap((res) => {
+            if (!res.data.orders) {
+              throw new Error('Something went wrong');
+            }
+            this._orders.next(res.data.orders);
+            return this._orders.asObservable();
+          })
         );
-      }
-
-      const c = new Cafe({
-        id: data.cafes.indexOf(cafe),
-        name: cafe.name,
-        foodList,
-      });
-
-      this.cafes.push(c);
     }
+    return this._orders.asObservable();
+  }
 
-    for (const f of data.foods) {
-      this.foods.push(
-        new FoodItem(
-          data.foods.indexOf(f),
-          f.name,
-          f.price,
-          f.imgAddr,
-          f.desc,
-          f.category
-        )
+  constructor(private apollo: Apollo) {}
+
+  get categories() {
+    return this.apollo
+      .query<any>({
+        query: GET_CATEGORIES,
+      })
+      .pipe(
+        map((res) => {
+          if (!res.data.categories) {
+            throw new Error('Something went wrong');
+          }
+          return res.data.categories;
+        })
       );
-    }
-
-    this.categories = data.categories;
-    // this.cart.push(new CartItem(this.cafes[0].foodList[0], 1, this.cafes[0]));
-    // this.orders = [
-    //   {
-    //     cart: [
-    //       new CartItem(this.cafes[0].foodList[0], 2, this.cafes[0]),
-    //       new CartItem(this.cafes[2].foodList[1], 3, this.cafes[2]),
-    //     ],
-    //     location: { lat: 7.043778, lng: 38.479427 },
-    //   },
-    //   {
-    //     cart: [
-    //       new CartItem(this.cafes[1].foodList[2], 1, this.cafes[1]),
-    //       new CartItem(this.cafes[3].foodList[3], 4, this.cafes[3]),
-    //     ],
-    //     location: { lat: 7.043778, lng: 38.479427 },
-    //   },
-    // ];
   }
 
-  // Cafe related
-  getCafe(id: string | number): Cafe {
-    for (const cafe of this.cafes) {
-      // tslint:disable-next-line: curly
-      if (cafe.id === id) return cafe;
-    }
-    return null;
+  // Food related (observable data interaction)
+  getFood(id: string): Observable<FoodItemInterface> {
+    return this.apollo
+      .query<any>({
+        query: GET_FOOD,
+        variables: { id },
+      })
+      .pipe(
+        map((res) => {
+          if (!res.data.food) {
+            throw new Error('Something went wrong while searching for food');
+          }
+          return res.data.food;
+        })
+      );
   }
 
-  getAvailableCafes(foodId: number) {
-    return this.cafes.filter((c) => !!c.foodList.find((f) => f.id === foodId));
+  searchFood(searchTerm: string): Observable<FoodItemInterface[]> {
+    return this.apollo
+      .query<any>({
+        query: SEARCH_FOOD,
+        variables: { searchTerm: searchTerm.trim() },
+      })
+      .pipe(
+        map((res) => {
+          if (!res.error) {
+            return res.data.foods;
+          }
+          throw new Error('Something went wrong while searching for food');
+        })
+      );
   }
 
-  // Food related
-  getFood(id: number): FoodItem {
-    for (const f of this.foods) {
-      // tslint:disable-next-line: curly
-      if (f.id === id) return f;
-    }
-    return null;
+  getFoodsByCategory(categoryId: string): Observable<FoodItemInterface[]> {
+    return this.apollo
+      .query<any>({
+        query: FILTER_FOOD_BY_CATEGORY,
+        variables: { categoryId },
+      })
+      .pipe(
+        map((res) => {
+          if (!res.error) {
+            return res.data.foods;
+          }
+          throw new Error('Something went wrong');
+        })
+      );
   }
 
-  findFood(searchTerm: string) {
-    searchTerm = searchTerm.trim().toLowerCase();
-    return this.foods.filter((f) =>
-      f.name.toLowerCase().startsWith(searchTerm)
+  // Cart related (also non-observable data interaction)
+  addToCart(food: FoodItemInterface, quantity: number, cafe: CafeInterface) {
+    return this.cart.pipe(
+      take(1),
+      map((cart) => {
+        // Check if food is already in cart (didnt use the isFoodInCart
+        // method to not subscribe the subject twice)
+        const cartItem = cart.find((cI) => cI.food.id === food.id);
+        if (cartItem === undefined) {
+          this._cart.next(cart.concat({ food, quantity, cafe }));
+        }
+      })
     );
   }
 
-  getFoodsByCategory(categoryId: number) {
-    return this.foods.filter((f) => f.category === categoryId);
-  }
-
-  // Category related
-  getCategory(id: number) {
-    return data.categories[id] || null;
-  }
-
-  // Cart related
-  addToCart(food: FoodItem, quantity: number, cafe: Cafe) {
-    this.cart.push(new CartItem(food, quantity, cafe));
-  }
-
-  isFoodInCart(foodId: number) {
-    const cartItem = this.cart.find((cI) => cI.food.id === foodId);
+  isFoodInCart(foodId: string) {
+    let cartItem: CartItemInterface;
+    this.cart.pipe(take(1)).subscribe((cart) => {
+      cartItem = cart.find((cI) => cI.food.id === foodId);
+    });
     return cartItem !== undefined;
   }
 
-  updateItemQuantity(i: number, quantity: number) {
-    if (this.cart[i] && quantity > 0) {
-      this.cart[i].quantity = quantity;
+  alterItemQuantity(cartItem: CartItemInterface, action: '+' | '-') {
+    if (action === '+') {
+      this.cart.pipe(take(1)).subscribe((cart) => {
+        const i = cart.findIndex((cI) => cI.food.id === cartItem.food.id);
+        if (i >= 0) {
+          cart[i].quantity++;
+          this._cart.next(cart);
+        }
+      });
+      return;
     }
-  }
-
-  removeItem(i: number) {
-    if (this.cart[i]) {
-      this.cart = this.cart.filter((_, index) => index !== i);
+    // NOTE that action is clearly '-' from this line on
+    if (cartItem.quantity >= 2) {
+      this.cart.pipe(take(1)).subscribe((cart) => {
+        const i = cart.findIndex((cI) => cI.food.id === cartItem.food.id);
+        if (i >= 0) {
+          cart[i].quantity--;
+          this._cart.next(cart);
+        }
+      });
+      return;
     }
+    // cartItem is removed entirely since its quantity is 1
+    this.cart.pipe(take(1)).subscribe((cart) => {
+      const i = cart.findIndex((cI) => cI.food.id === cartItem.food.id);
+      if (i >= 0) {
+        this._cart.next(cart.filter((_, index) => index !== i));
+      }
+    });
   }
 
   // Order Related
-  finishOrder({ lat, lng }) {
-    this.orders.push({
-      cart: this.cart,
-      location: { lat, lng },
-    });
-
-    this.cart = [];
-    this.navCtrl.navigateRoot('/home/cart/done');
+  finishOrder({ lat, lng }): Observable<any> {
+    let o: Order = null;
+    let oldOrders: Order[] = [];
+    return this.cart.pipe(
+      take(1),
+      switchMap((cart) => {
+        o = { cart, location: { lat, lng } };
+        return this.orders;
+      }),
+      take(1),
+      switchMap((orders) => {
+        oldOrders = orders;
+        const cartInput = [];
+        for (const c of o.cart) {
+          cartInput.push({
+            foodId: c.food.id,
+            cafeId: c.cafe.id,
+            quantity: c.quantity,
+          });
+        }
+        return this.apollo.mutate<any>({
+          mutation: ADD_ORDER_MUTATION,
+          variables: {
+            cart: cartInput,
+            location: o.location,
+          },
+          // Update the cache after the mutation (handles state update for the frontend)
+          update: (cache, { data: { addOrder: newOrder } }) => {
+            let oldData: { orders: Order[] };
+            oldData = cache.readQuery({ query: GET_ORDERS });
+            cache.writeQuery({
+              query: GET_ORDERS,
+              data: {
+                orders: [...oldData.orders, newOrder],
+              },
+            });
+          },
+        });
+      }),
+      take(1),
+      tap(() => {
+        this._cart.next([]);
+        // this._orders.next doesnt have to be called it is cached and also updated above
+        // however the cache is not persistent but it is handled by the ngOnInit on the myorders.page
+        // which fetchs the data from the db using the manager.service. then the data is automatically cached by apollo.
+      })
+    );
   }
 
-  getOrder(index: number) {
-    return this.orders[index] || null;
-  }
-
-  calcAmt(cart: CartItem[]): number {
-    let total = 0;
-    cart.forEach((cartItem) => {
-      total += cartItem.food.price * cartItem.quantity;
-    });
-    return total;
-  }
-
-  getStat(order: Order): 'hourglass-outline' | 'checkmark-done' {
-    // check if the order is done and decide
-    return 'hourglass-outline';
+  getOrder(id: string) {
+    return this.orders.pipe(
+      take(1),
+      map((orders) => {
+        return orders.find((o) => o.id === id) || null;
+      })
+    );
   }
 }

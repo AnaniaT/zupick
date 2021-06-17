@@ -37,8 +37,11 @@ ion-content {
     display: flex;
     padding: 5px 10px;
     max-width: 560px;
-    margin: 0 auto;
+    margin: 0 auto 3px;
     border-bottom: 1px solid #aaa;
+    cursor: pointer;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 
     $statWidth: 60px;
 

@@ -1,6 +1,9 @@
-import { CartItem } from './cartItem.model';
+import { CartItem, CartItemInterface } from './cartItem.model';
 
 export interface Order {
-  cart: CartItem[];
+  id?: string;
+  cart: CartItemInterface[];
   location: { lat: number; lng: number };
+  orderedAt?: string;
+  status?: string; // 'ongoing' | 'delivered';
 }

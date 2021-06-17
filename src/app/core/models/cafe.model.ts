@@ -1,23 +1,25 @@
 import { FoodItem } from './item.model';
 
-interface CafeInterface {
-  name: string;
-  id: number;
-  foodList: FoodItem[];
-  logo?: string;
-  location?: Coord;
-}
 interface Coord {
   lat: number;
   lng: number;
 }
 
+export interface CafeInterface {
+  id: string;
+  name: string;
+  logo?: string;
+  location?: Coord;
+  foodList?: string[];
+}
+
+
 export class Cafe {
-  public id: number;
+  public id: string;
   public name: string;
   public logo: string;
   public location: Coord;
-  public foodList: FoodItem[];
+  public foodList: string[];
 
   constructor({ id, name, logo, location, foodList }: CafeInterface) {
     this.id = id;
